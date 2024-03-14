@@ -23,6 +23,7 @@ public class Player7Model {
         return pname;
     }
 
+
     public int getSid() {
         return sid;
     }
