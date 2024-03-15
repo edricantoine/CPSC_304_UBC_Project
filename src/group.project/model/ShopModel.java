@@ -22,4 +22,8 @@ public class ShopModel {
     public String getStatus() {
         return status;
     }
+
+    public String getName() {
+        return "Shop";
+    }
 }

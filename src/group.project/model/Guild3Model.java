@@ -16,4 +16,8 @@ public class Guild3Model {
     public int getRank() {
         return rank;
     }
+
+    public String getName() {
+        return "Guild3";
+    }
 }

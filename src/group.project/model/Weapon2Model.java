@@ -22,4 +22,8 @@ public class Weapon2Model {
     public int getDamage() {
         return damage;
     }
+
+    public String getName() {
+        return "Weapon2";
+    }
 }

@@ -34,4 +34,8 @@ public class ItemModel {
     public int getValue() {
         return value;
     }
+
+    public String getName() {
+        return "Item";
+    }
 }

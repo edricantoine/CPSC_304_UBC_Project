@@ -16,4 +16,8 @@ public class NPCModel {
     public String getNname() {
         return nname;
     }
+
+    public String getName() {
+        return "NPC";
+    }
 }

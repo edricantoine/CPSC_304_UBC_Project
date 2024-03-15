@@ -29,4 +29,8 @@ public class DoesModel {
     public int getProgress() {
         return progress;
     }
+
+    public String getName() {
+        return "Does";
+    }
 }

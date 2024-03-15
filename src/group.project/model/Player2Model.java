@@ -16,4 +16,8 @@ public class Player2Model {
     public int getLevel() {
         return level;
     }
+
+    public String getName() {
+        return "Player2";
+    }
 }

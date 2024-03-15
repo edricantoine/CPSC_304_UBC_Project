@@ -34,4 +34,8 @@ public class QuestModel {
     public String getObjectives() {
         return objectives;
     }
+
+    public String getName() {
+        return "Quest";
+    }
 }

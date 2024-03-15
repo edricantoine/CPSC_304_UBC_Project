@@ -16,4 +16,8 @@ public class Guild2Model {
     public int getGoldBonus() {
         return goldBonus;
     }
+
+    public String getName() {
+        return "Guild2";
+    }
 }

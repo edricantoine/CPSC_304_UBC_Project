@@ -28,4 +28,8 @@ public class QuestItemModel {
     public String getDescription() {
         return description;
     }
+
+    public String getName() {
+        return "QuestItem";
+    }
 }

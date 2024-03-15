@@ -16,4 +16,8 @@ public class Player6Model {
     public int getHealth() {
         return health;
     }
+
+    public String getName() {
+        return "Player6";
+    }
 }

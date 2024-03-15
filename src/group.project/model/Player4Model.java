@@ -16,4 +16,8 @@ public class Player4Model {
     public int getMana() {
         return mana;
     }
+
+    public String getName() {
+        return "Player4";
+    }
 }

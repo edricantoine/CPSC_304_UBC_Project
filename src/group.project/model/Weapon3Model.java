@@ -28,4 +28,8 @@ public class Weapon3Model {
     public String getRarity() {
         return rarity;
     }
+
+    public String getName() {
+        return "Weapon3";
+    }
 }

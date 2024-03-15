@@ -47,4 +47,8 @@ public class Player7Model {
     public String getRole() {
         return role;
     }
+
+    public String getName() {
+        return "Player7";
+    }
 }

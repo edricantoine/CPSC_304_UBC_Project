@@ -28,4 +28,8 @@ public class InventoryModel {
     public int getSize() {
         return size;
     }
+
+    public String getName() {
+        return "Inventory";
+    }
 }

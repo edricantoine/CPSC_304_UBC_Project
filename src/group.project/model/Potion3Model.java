@@ -40,4 +40,8 @@ public class Potion3Model {
     public int getPrice() {
         return price;
     }
+
+    public String getName() {
+        return "Potion3";
+    }
 }

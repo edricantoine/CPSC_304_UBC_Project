@@ -22,4 +22,8 @@ public class Potion2Model {
     public String getEffect() {
         return effect;
     }
+
+    public String getName() {
+        return "Potion2";
+    }
 }
