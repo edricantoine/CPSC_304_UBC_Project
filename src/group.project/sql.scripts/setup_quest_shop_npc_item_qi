@@ -1,0 +1,108 @@
+CREATE TABLE Quest(
+    qname VARCHAR(50) PRIMARY KEY,
+    giverid INT NOT NULL, 
+    exp INT NOT NULL,
+    minlevel INT NOT NULL,
+    objectives VARCHAR(50),
+    UNIQUE(objectives),
+    FOREIGN KEY (giverid) REFERENCES NPC(nid)
+);
+
+CREATE TABLE Shop(
+    shopid INT PRIMARY KEY, 
+    ownerid INT NOT NULL, 
+    status VARCHAR(50) NOT NULL, 
+    UNIQUE (ownerid), 
+    FOREIGN KEY (ownerid) REFERENCES NPC (nid)
+);
+
+CREATE TABLE Inventory(
+    invid INT PRIMARY KEY, 
+    pname VARCHAR(50) NOT NULL, 
+    sid INT NOT NULL, 
+    size INT NOT NULL, 
+    UNIQUE(pname, sid), 
+    FOREIGN KEY (pname) REFERENCES Player_7 (pname), 
+    FOREIGN KEY (sid) REFERENCES Server (sid)
+);
+
+CREATE TABLE NPC(
+    nid INT PRIMARY KEY, 
+    nname VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE QuestItem(
+    qiname VARCHAR(50), 
+    qiid INT, 
+    type VARCHAR(50) NOT NULL,
+    description VARCHAR(50) NOT NULL, 
+    PRIMARY KEY (qiname, qiid), 
+    FOREIGN KEY (qiname, qiid) REFERENCES Item (iname, iid)
+);
+
+CREATE TABLE Item(
+    iname VARCHAR(50), 
+    iid VARCHAR(50), 
+    invid INT, 
+    questname VARCHAR(50), 
+    value INT NOT NULL, 
+    PRIMARY KEY (iname, iid), 
+    FOREIGN KEY (questname) REFERENCES Quest (qname),
+    FOREIGN KEY (invid) REFERENCES Inventory (invid)
+);
+
+
+
+INSERT INTO Inventory VALUES (1, 'Player1', 1, 10);
+INSERT INTO Inventory VALUES (2, 'Leeroy Jenkins', 1, 20);
+INSERT INTO Inventory VALUES (3, 'Chuck E. Cheese', 2, 25);
+INSERT INTO Inventory VALUES (4, 'Homer Simpsonn', 3, 30);
+INSERT INTO Inventory VALUES (5, 'GandalfTheCool', 5, 50);
+
+INSERT INTO Quest VALUES ('Buy a Weapon', 1, 100, 1, 'Buy your first weapon');
+INSERT INTO Quest VALUES ('Buy a Potion', 2, 150, 5, 'Buy your first potion');
+INSERT INTO Quest VALUES ('Slay a Monster', 3, 500, 3, 'Defeat one slime');
+INSERT INTO Quest VALUES ('Join a Guild', 4, 1000, 10, 'Join the Beginners Guild');
+INSERT INTO Quest VALUES ('Deliver a Letter', 5, 300, 8, 'Deliver the letter to Bob');
+
+INSERT INTO NPC VALUES (1, 'Alice');
+INSERT INTO NPC VALUES (2, 'Bob');
+INSERT INTO NPC VALUES (3, 'Charles');
+INSERT INTO NPC VALUES (4, 'David');
+INSERT INTO NPC VALUES (5, 'Emily');
+INSERT INTO NPC VALUES (6, 'Frank');
+
+
+INSERT INTO Shop VALUES(1, 1, 'open');
+INSERT INTO Shop VALUES(2, 2, 'open');
+INSERT INTO Shop VALUES(3, 3, 'closed');
+INSERT INTO Shop VALUES(4, 5, 'closed');
+INSERT INTO Shop VALUES(5, 6, 'open');
+
+
+INSERT INTO Item VALUES('iron ingot', 1, 1, NULL, 5);
+INSERT INTO Item VALUES('bronze ingot', 2, 1, NULL, 3);
+INSERT INTO Item VALUES('tuna', 3, 2, NULL, 2);
+INSERT INTO Item VALUES('blue hat', 4, 1, NULL, 10);
+INSERT INTO Item VALUES('dandelion', 5, 1, NULL, 1);
+INSERT INTO Item VALUES('Small Potion of Health', 6, 3, 'Deliver a Letter', 10)
+INSERT INTO Item VALUES('Medium Potion of Speed', 7, 5, NULL, 20);
+INSERT INTO Item VALUES('Large Potion of Strength', 8, 1, NULL, 30);
+INSERT INTO Item VALUES('Small Potion of Defense', 9, NULL, NULL, 10);
+INSERT INTO Item VALUES('Extra-Large Potion of Evasion', 10, NULL, NULL, 40);
+INSERT INTO Item VALUES('Steamy Love Letter', 11, 'Deliver a Letter', -1);
+INSERT INTO Item VALUES('Boar Tusk', 12, 'Slay a Monster', -1);
+INSERT INTO Item VALUES('Poisoned Vial', 13, 'Buy your first Potion', -1);
+INSERT INTO Item VALUES('Heroes Sword', 14, 'Buy your First Weapon', -1);
+INSERT INTO Item VALUES('Quil of Destiny', 15, 'Join a Guild', -1);
+INSERT INTO Item VALUES('Wooden Sword', 16, 1, 'Buy a Weapon', 5);
+INSERT INTO Item VALUES('Stone Hammer', 17, NULL, NULL, 10);
+INSERT INTO Item VALUES('Quality Bow', 18, NULL, NULL, 100);
+INSERT INTO Item VALUES('Iron Sword', 19, NULL, NULL, 1000);
+INSERT INTO Item VALUES('Diamond Hammer', 20, 2, NULL, 10000);
+
+INSERT INTO Item VALUES('Love Letter', 11, 'readable', 'A poorly written love letter - blech!');
+INSERT INTO Item VALUES('Boar Tusk', 12, 'useable', 'The tusk of a Boar');
+INSERT INTO Item VALUES('Poisoned Vial', 13, 'useable', 'With or without ice?');
+INSERT INTO Item VALUES('Heroes Sword', 14, 'useable', 'The stuff of Legends!');
+INSERT INTO Item VALUES('Quil of Destiny', 15, 'useable', 'Cue the Epic Music');
