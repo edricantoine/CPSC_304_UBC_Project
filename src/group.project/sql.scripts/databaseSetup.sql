@@ -144,6 +144,12 @@ INSERT INTO Guild_3 VALUES ('Intermediate Guild', 2);
 INSERT INTO Guild_3 VALUES ('Advanced Guild', 3);
 INSERT INTO Guild_3 VALUES ('Expert Guild', 4);
 INSERT INTO Guild_3 VALUES ('Pals for Life', 5);
+INSERT INTO Guild_3 VALUES ('Rivals for Life', 5);
+INSERT INTO Guild_3 VALUES ('Acquaintances for Life', 5);
+INSERT INTO Guild_3 VALUES ('Old Hunters', 3);
+INSERT INTO Guild_3 VALUES ('Byrgenwerth College', 3);
+INSERT INTO Guild_3 VALUES ('Healing Church', 3);
+INSERT INTO Guild_3 VALUES ('The Choir', 3);
 
 INSERT INTO Player_2 VALUES (100, 1);
 INSERT INTO Player_2 VALUES (500, 3);

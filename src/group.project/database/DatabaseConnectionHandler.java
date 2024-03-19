@@ -124,6 +124,25 @@ public class DatabaseConnectionHandler {
 
     }
 
+    public Integer[] getRanksWithMostGuilds() {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        try {
+            String query = "SELECT g.rank as rank FROM Guild_3 g GROUP BY g.rank HAVING COUNT(g.gname) = (SELECT MAX(numGuilds) FROM (SELECT COUNT(g2.gname) AS numGuilds FROM Guild_3 g2 GROUP BY g2.rank))";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                Integer toAdd = rs.getInt("rank");
+                result.add(toAdd);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+        return result.toArray(new Integer[result.size()]);
+    }
+
 
     public void close() {
         try {

@@ -21,4 +21,8 @@ public class MainController implements TransactionDelegate {
         dbHandler.deleteNPC(nidToDelete, nameToDelete);
     }
 
+    public Integer[] getRanksWithMostGuilds() {
+       return dbHandler.getRanksWithMostGuilds();
+    }
+
 }
