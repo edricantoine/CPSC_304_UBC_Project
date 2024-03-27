@@ -25,4 +25,7 @@ public class MainController implements TransactionDelegate {
        return dbHandler.getRanksWithMostGuilds();
     }
 
+    public Integer getTotalInventoryValue() {
+        return dbHandler.getTotalInventoryValue();
+    }
 }

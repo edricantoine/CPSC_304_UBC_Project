@@ -143,6 +143,31 @@ public class DatabaseConnectionHandler {
         return result.toArray(new Integer[result.size()]);
     }
 
+    public Integer getTotalInventoryValue(int id) {
+        Integer result = 0;
+        try {
+            String query =
+                    "SELECT iname, SUM(value) as item_total_value" +
+                    "FROM Inventory JOIN Item ON Inventory.invid = Item.invid" +
+                    "WHERE Inventory.invid = ?" +
+                    "GROUP BY iname";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                Integer itemValue = rs.getInt("item_total_value");
+                result +=  itemValue;
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+
+        return result;
+    }
+
 
     public void close() {
         try {
