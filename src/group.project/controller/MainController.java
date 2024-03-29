@@ -1,13 +1,14 @@
 package group.project.controller;
 
 import group.project.database.DatabaseConnectionHandler;
+import group.project.delegates.LoginDelegate;
 import group.project.delegates.TransactionDelegate;
 import group.project.model.Player2Model;
 import group.project.model.Player4Model;
 import group.project.model.Player6Model;
 import group.project.model.Player7Model;
 
-public class MainController implements TransactionDelegate {
+public class MainController implements TransactionDelegate, LoginDelegate {
     private DatabaseConnectionHandler dbHandler = null;
     public MainController() {
         dbHandler = new DatabaseConnectionHandler();
@@ -23,6 +24,10 @@ public class MainController implements TransactionDelegate {
 
     public Integer[] getRanksWithMostGuilds() {
        return dbHandler.getRanksWithMostGuilds();
+    }
+
+    public void login(String username, String password) {
+        boolean connected = dbHandler.login(username, password);
     }
 
 }
