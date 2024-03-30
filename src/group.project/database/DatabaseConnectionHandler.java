@@ -8,6 +8,7 @@ import group.project.model.Player2Model;
 import group.project.model.Player4Model;
 import group.project.model.Player6Model;
 import group.project.model.Player7Model;
+import group.project.model.QuestModel;
 import group.project.util.PrintablePreparedStatement;
 
 public class DatabaseConnectionHandler {
@@ -145,6 +146,70 @@ public class DatabaseConnectionHandler {
             rollbackConnection();
         }
         return result.toArray(new Integer[result.size()]);
+    }
+
+    public int getTotalInventoryValue(int id) {
+        int result = 0;
+        try {
+            String query =
+                    "SELECT iname, SUM(value) as item_total_value" +
+                    "FROM Inventory JOIN Item ON Inventory.invid = Item.invid" +
+                    "WHERE Inventory.invid = ?" +
+                    "GROUP BY iname";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                int itemValue = rs.getInt("item_total_value");
+                result +=  itemValue;
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+        return result;
+    }
+
+    public QuestModel[] getQuestInfo(int option, String value) {
+        ArrayList<QuestModel> result = new ArrayList<QuestModel>();
+        try {
+            String query = "SELECT * FROM Quest WHERE ";
+
+            switch(option) {
+                case 1:
+                    query += "qname = ?";
+                    break;
+                case 2:
+                    query += "minlevel >= ?";
+                    break;
+                case 3:
+                    query += "exp > ?";
+                    break;
+                default:
+                    // Handle invalid option
+                    return null;
+            }
+
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setString(1, value);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                QuestModel model = new QuestModel(rs.getString("qname"),
+                        rs.getInt("giverid"),
+                        rs.getInt("exp"),
+                        rs.getInt("minlevel"),
+                        rs.getString("objectives"));
+                result.add(model);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        return result.toArray(new QuestModel[result.size()]);
     }
 
 

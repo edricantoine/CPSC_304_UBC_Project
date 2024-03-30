@@ -7,6 +7,7 @@ import group.project.model.Player2Model;
 import group.project.model.Player4Model;
 import group.project.model.Player6Model;
 import group.project.model.Player7Model;
+import group.project.model.QuestModel;
 
 public class MainController implements TransactionDelegate, LoginDelegate {
     private DatabaseConnectionHandler dbHandler = null;
@@ -25,6 +26,15 @@ public class MainController implements TransactionDelegate, LoginDelegate {
     public Integer[] getRanksWithMostGuilds() {
        return dbHandler.getRanksWithMostGuilds();
     }
+
+    public int getTotalInventoryValue(int id) {
+        return dbHandler.getTotalInventoryValue(id);
+    }
+
+    public QuestModel[] getQuestInfo(int option, String value) {
+        return dbHandler.getQuestInfo(option, value);
+    }
+
 
     public void login(String username, String password) {
         boolean connected = dbHandler.login(username, password);
