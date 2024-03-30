@@ -3,6 +3,7 @@ package group.project.App;
 import group.project.database.DatabaseConnectionHandler;
 import group.project.delegates.LoginDelegate;
 import group.project.delegates.TransactionDelegate;
+import group.project.model.QuestModel;
 import group.project.model.Player2Model;
 import group.project.model.Player4Model;
 import group.project.model.Player6Model;
@@ -51,6 +52,14 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
 
     public Integer[] getRanksWithMostGuilds() {
         return dbHandler.getRanksWithMostGuilds();
+    }
+
+    public int getTotalInventoryValue(int id) {
+        return dbHandler.getTotalInventoryValue(id);
+    }
+
+    public QuestModel[] getQuestInfo(int option, String value) {
+        return dbHandler.getQuestInfo(option, value);
     }
 
     public void login(String username, String password) {
