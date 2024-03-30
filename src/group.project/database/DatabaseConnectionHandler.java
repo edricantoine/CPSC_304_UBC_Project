@@ -152,9 +152,9 @@ public class DatabaseConnectionHandler {
         int result = 0;
         try {
             String query =
-                    "SELECT iname, SUM(value) as item_total_value" +
-                    "FROM Inventory JOIN Item ON Inventory.invid = Item.invid" +
-                    "WHERE Inventory.invid = ?" +
+                    "SELECT iname, SUM(value) as item_total_value " +
+                    "FROM Inventory JOIN Item ON (Inventory.invid = Item.invid) " +
+                    "WHERE Inventory.invid = (?) " +
                     "GROUP BY iname";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setInt(1, id);
