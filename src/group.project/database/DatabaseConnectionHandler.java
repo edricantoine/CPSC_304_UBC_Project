@@ -12,7 +12,7 @@ import group.project.model.QuestModel;
 import group.project.util.PrintablePreparedStatement;
 
 public class DatabaseConnectionHandler {
-    private static final String ORACLE_URL = "jdbc:oracle:thin:@localhost:1522:stu";
+    private static final String ORACLE_URL = "jdbc:oracle:thin:@dbhost.students.cs.ubc.ca:1522:stu";
     private static final String EXCEPTION_TAG = "[EXCEPTION]";
     private static final String WARNING_TAG = "[WARNING]";
 
@@ -30,61 +30,65 @@ public class DatabaseConnectionHandler {
 
     public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) {
         try {
-            String query2 = "INSERT INTO Player_2 VALUES (?, ?)";
+            String query2 = "INSERT /*+ IGNORE_ROW_ON_DUPKEY_INDEX (Player_2 (exp)) */ INTO Player_2 VALUES (?, ?)";
             PrintablePreparedStatement ps2 = new PrintablePreparedStatement(connection.prepareStatement(query2), query2, false);
             ps2.setInt(1, p2.getExp());
             ps2.setInt(2, p2.getLevel());
+            ps2.executeUpdate();
+            ps2.close();
 
-            String query4 = "INSERT INTO Player_4 VALUES (?, ?)";
-            PrintablePreparedStatement ps4 = new PrintablePreparedStatement(connection.prepareStatement(query4), query4, false);
-            ps4.setInt(1, p4.getExp());
-            ps4.setInt(2, p4.getMana());
 
-            String query6 = "INSERT INTO Player_6 VALUES (?, ?)";
-            PrintablePreparedStatement ps6 = new PrintablePreparedStatement(connection.prepareStatement(query6), query6, false);
-            ps6.setInt(1, p6.getExp());
-            ps6.setInt(2, p6.getHealth());
+            String query4 = "INSERT /*+ IGNORE_ROW_ON_DUPKEY_INDEX (Player_4 (exp)) */ INTO Player_4 VALUES (?, ?)";
+            ps2 = new PrintablePreparedStatement(connection.prepareStatement(query4), query4, false);
+            ps2.setInt(1, p4.getExp());
+            ps2.setInt(2, p4.getMana());
+            ps2.executeUpdate();
+            ps2.close();
+
+
+            String query6 = "INSERT /*+ IGNORE_ROW_ON_DUPKEY_INDEX (Player_6 (exp)) */ INTO Player_6 VALUES (?, ?)";
+            ps2 = new PrintablePreparedStatement(connection.prepareStatement(query6), query6, false);
+            ps2.setInt(1, p6.getExp());
+            ps2.setInt(2, p6.getHealth());
+            ps2.executeUpdate();
+            ps2.close();
+
 
             String query7 = "INSERT INTO Player_7 VALUES (?, ?, ?, ?, ?, ?, ?)";
-            PrintablePreparedStatement ps7 = new PrintablePreparedStatement(connection.prepareStatement(query7), query7, false);
-            ps7.setString(1, p7.getPname());
-            ps7.setInt(2, p7.getSid());
+            ps2 = new PrintablePreparedStatement(connection.prepareStatement(query7), query7, false);
+            ps2.setString(1, p7.getPname());
+            ps2.setInt(2, p7.getSid());
+
 
             if(Objects.equals(p7.getWname(), "")) {
-                ps7.setNull(3, java.sql.Types.VARCHAR);
+                ps2.setNull(3, java.sql.Types.VARCHAR);
             } else {
-                ps7.setString(3, p7.getWname());
+                ps2.setString(3, p7.getWname());
             }
 
             if(p7.getWid() == -1) {
-                ps7.setNull(4, java.sql.Types.INTEGER);
+                ps2.setNull(4, java.sql.Types.INTEGER);
             } else {
-                ps7.setInt(4, p7.getWid());
+                ps2.setInt(4, p7.getWid());
             }
 
-            ps7.setInt(5, p7.getExp());
+            ps2.setInt(5, p7.getExp());
             if(Objects.equals(p7.getGname(), "")) {
-                ps7.setNull(6, java.sql.Types.VARCHAR);
+                ps2.setNull(6, java.sql.Types.VARCHAR);
             } else {
-                ps7.setString(6, p7.getGname());
+                ps2.setString(6, p7.getGname());
             }
 
             if(Objects.equals(p7.getRole(), "")) {
-                ps7.setNull(7, java.sql.Types.VARCHAR);
+                ps2.setNull(7, java.sql.Types.VARCHAR);
             } else {
-                ps7.setString(7, p7.getRole());
+                ps2.setString(7, p7.getRole());
             }
 
             ps2.executeUpdate();
-            ps4.executeUpdate();
-            ps6.executeUpdate();
-            ps7.executeUpdate();
             connection.commit();
-
             ps2.close();
-            ps4.close();
-            ps6.close();
-            ps7.close();
+            System.out.println("Success!");
 
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
@@ -225,5 +229,21 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
+    }
+
+    public boolean login(String username, String password) {
+        try {
+            if(connection != null) {
+                connection.close();
+            }
+            connection = DriverManager.getConnection(ORACLE_URL, username, password);
+            connection.setAutoCommit(false);
+            System.out.println("\nConnected to Oracle!");
+            return true;
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            return false;
+        }
+
     }
 }
