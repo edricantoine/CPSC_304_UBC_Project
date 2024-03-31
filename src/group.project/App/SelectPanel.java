@@ -47,7 +47,7 @@ public class SelectPanel {
         // Determine the integer value and string to send to the backend based on the selected option
         String whereClause;
         switch (Objects.requireNonNull(selectedOption)) {
-            case "Quest name = Buy a Weapon":
+            case "Quest name = 'Buy a Weapon'":
                 whereClause = "qname = 'Buy a Weapon'";
                 break;
             case "Min level >= 5":
