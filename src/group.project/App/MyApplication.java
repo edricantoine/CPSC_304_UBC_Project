@@ -18,12 +18,10 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
     private JPanel mainPanel;
 
     private JPanel updatePanel;
-
     private JPanel insertPanel;
-
     private JPanel deletePanel;
-
     private JPanel selectPanel;
+    private JPanel aggrGroupByPanel;
 
     public MyApplication() {
         dbHandler = new DatabaseConnectionHandler();
@@ -89,17 +87,21 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             JButton insertButton = new JButton("Insert Player");
             JButton deleteButton = new JButton("Delete NPC");
             JButton selectButton = new JButton("Select Quests");
+            JButton aggrGroupByButton = new JButton("Get Inventory Value"); // Aggregation Group By
 
             DeletePanel dp = new DeletePanel();
             InsertPanel ip = new InsertPanel();
             SelectPanel sp = new SelectPanel();
+            AggrGroupByPanel agbp = new AggrGroupByPanel();
             deletePanel = dp.getDeletePanel(this);
             insertPanel = ip.getInsertPanel(this);
             selectPanel = sp.getSelectPanel(this);
+            aggrGroupByPanel= agbp.getAggrGroupByPanel(this);
 
             insertButton.addActionListener(e -> switchScreen(insertPanel));
             deleteButton.addActionListener(e -> switchScreen(deletePanel));
             selectButton.addActionListener(e -> switchScreen(selectPanel));
+            aggrGroupByButton.addActionListener(e -> switchScreen(aggrGroupByPanel));
 
 
             // Add all Buttons
@@ -107,6 +109,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             mainPanel.add(insertButton);
             mainPanel.add(deleteButton);
             mainPanel.add(selectButton);
+            mainPanel.add(aggrGroupByButton);
 
             // Finish
             frame.add(mainPanel);
