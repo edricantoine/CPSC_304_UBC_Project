@@ -193,28 +193,13 @@ public class DatabaseConnectionHandler {
         return result;
     }
 
-    public QuestModel[] getQuestInfo(int option, String value) {
+    public QuestModel[] selectQuests(String whereClause) {
         ArrayList<QuestModel> result = new ArrayList<QuestModel>();
         try {
             String query = "SELECT * FROM Quest WHERE ";
-
-            switch(option) {
-                case 1:
-                    query += "qname = ?";
-                    break;
-                case 2:
-                    query += "minlevel >= ?";
-                    break;
-                case 3:
-                    query += "exp > ?";
-                    break;
-                default:
-                    // Handle invalid option
-                    return null;
-            }
+            query += whereClause;
 
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setString(1, value);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {

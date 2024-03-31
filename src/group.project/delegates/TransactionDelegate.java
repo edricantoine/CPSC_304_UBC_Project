@@ -14,5 +14,5 @@ public interface TransactionDelegate {
     public void deleteNPC(ArrayList<Integer> nidsToDelete, ArrayList<String> namesToDelete);
     public Integer[] getRanksWithMostGuilds();
     public int getTotalInventoryValue(int id);
-    public QuestModel[] getQuestInfo(int option, String value);
+    QuestModel[] selectQuests(String whereClause);
 }

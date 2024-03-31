@@ -27,6 +27,8 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
 
     private JPanel deletePanel;
 
+    private JPanel selectPanel;
+
     public MyApplication() {
         dbHandler = new DatabaseConnectionHandler();
         loginWindow = new LoginWindow();
@@ -61,8 +63,8 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         return dbHandler.getTotalInventoryValue(id);
     }
 
-    public QuestModel[] getQuestInfo(int option, String value) {
-        return dbHandler.getQuestInfo(option, value);
+    public QuestModel[] selectQuests(String whereClause) {
+        return dbHandler.selectQuests(whereClause);
     }
 
     public void login(String username, String password) {
@@ -86,19 +88,25 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
 
             JButton insertButton = new JButton("Insert Player");
             JButton deleteButton = new JButton("Delete NPC");
+            JButton selectButton = new JButton("Select Quests");
 
             DeletePanel dp = new DeletePanel();
             InsertPanel ip = new InsertPanel();
+            SelectPanel sp = new SelectPanel();
             deletePanel = dp.getDeletePanel(this);
             insertPanel = ip.getInsertPanel(this);
+            selectPanel = sp.getSelectPanel(this);
 
             insertButton.addActionListener(e -> switchScreen(insertPanel));
             deleteButton.addActionListener(e -> switchScreen(deletePanel));
+            selectButton.addActionListener(e -> switchScreen(selectPanel));
+
 
             // Add all Buttons
 //        mainPanel.add(button); // replace this
             mainPanel.add(insertButton);
             mainPanel.add(deleteButton);
+            mainPanel.add(selectButton);
 
             // Finish
             frame.add(mainPanel);
