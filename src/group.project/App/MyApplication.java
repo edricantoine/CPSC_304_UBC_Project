@@ -11,6 +11,7 @@ import group.project.model.Player7Model;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class MyApplication implements TransactionDelegate, LoginDelegate {
 
@@ -23,6 +24,8 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
     private JPanel updatePanel;
 
     private JPanel insertPanel;
+
+    private JPanel deletePanel;
 
     public MyApplication() {
         dbHandler = new DatabaseConnectionHandler();
@@ -46,8 +49,8 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         dbHandler.insertPlayer(p2, p4, p6, p7);
     }
 
-    public void deleteNPC(int nidToDelete, String nameToDelete) {
-        dbHandler.deleteNPC(nidToDelete, nameToDelete);
+    public void deleteNPC(ArrayList<Integer> nidsToDelete, ArrayList<String> namesToDelete) {
+        dbHandler.deleteNPC(nidsToDelete, namesToDelete);
     }
 
     public Integer[] getRanksWithMostGuilds() {
@@ -82,13 +85,20 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
 //        button.addActionListener(e -> switchScreen(updatePanel));
 
             JButton insertButton = new JButton("Insert Player");
+            JButton deleteButton = new JButton("Delete NPC");
+
+            DeletePanel dp = new DeletePanel();
             InsertPanel ip = new InsertPanel();
+            deletePanel = dp.getDeletePanel(this);
             insertPanel = ip.getInsertPanel(this);
+
             insertButton.addActionListener(e -> switchScreen(insertPanel));
+            deleteButton.addActionListener(e -> switchScreen(deletePanel));
 
             // Add all Buttons
 //        mainPanel.add(button); // replace this
             mainPanel.add(insertButton);
+            mainPanel.add(deleteButton);
 
             // Finish
             frame.add(mainPanel);
