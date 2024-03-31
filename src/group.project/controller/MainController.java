@@ -33,8 +33,8 @@ public class MainController implements TransactionDelegate, LoginDelegate {
         return dbHandler.getTotalInventoryValue(id);
     }
 
-    public QuestModel[] getQuestInfo(int option, String value) {
-        return dbHandler.getQuestInfo(option, value);
+    public QuestModel[] selectQuests(String whereClause) {
+        return dbHandler.selectQuests(whereClause);
     }
 
 
