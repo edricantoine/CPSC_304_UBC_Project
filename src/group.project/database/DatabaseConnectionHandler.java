@@ -4,7 +4,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import group.project.model.*;
+import group.project.model.InventoryModel;
+import group.project.model.Player2Model;
+import group.project.model.Player4Model;
+import group.project.model.Player6Model;
+import group.project.model.Player7Model;
+import group.project.model.QuestModel;
 import group.project.util.PrintablePreparedStatement;
 
 public class DatabaseConnectionHandler {
@@ -226,7 +231,7 @@ public class DatabaseConnectionHandler {
                 InventoryModel model = new InventoryModel(rs.getInt("invid"),
                         rs.getString("pname"),
                         rs.getInt("sid"),
-                        rs.getInt("size"));
+                        rs.getInt("sz"));
                 result.add(model);
             }
 
