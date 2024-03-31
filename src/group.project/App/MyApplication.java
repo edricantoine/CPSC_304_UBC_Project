@@ -11,6 +11,7 @@ import group.project.model.Player7Model;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MyApplication implements TransactionDelegate, LoginDelegate {
@@ -28,6 +29,8 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
     private JPanel deletePanel;
 
     private JPanel selectPanel;
+
+    private JPanel havingPanel;
 
     public MyApplication() {
         dbHandler = new DatabaseConnectionHandler();
@@ -47,7 +50,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         frame.repaint();
     }
 
-    public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) {
+    public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) throws SQLException {
         dbHandler.insertPlayer(p2, p4, p6, p7);
     }
 
@@ -89,17 +92,22 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             JButton insertButton = new JButton("Insert Player");
             JButton deleteButton = new JButton("Delete NPC");
             JButton selectButton = new JButton("Select Quests");
+            JButton havingButton = new JButton("Find ranks with most guilds");
 
             DeletePanel dp = new DeletePanel();
             InsertPanel ip = new InsertPanel();
             SelectPanel sp = new SelectPanel();
+            HavingPanel hp = new HavingPanel();
+
             deletePanel = dp.getDeletePanel(this);
-            insertPanel = ip.getInsertPanel(this);
+            insertPanel = ip.getInsertPanel(this, frame, mainPanel);
             selectPanel = sp.getSelectPanel(this);
+            havingPanel = hp.getHavingPanel(this, frame, mainPanel);
 
             insertButton.addActionListener(e -> switchScreen(insertPanel));
             deleteButton.addActionListener(e -> switchScreen(deletePanel));
             selectButton.addActionListener(e -> switchScreen(selectPanel));
+            havingButton.addActionListener(e -> switchScreen(havingPanel));
 
 
             // Add all Buttons
@@ -107,6 +115,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             mainPanel.add(insertButton);
             mainPanel.add(deleteButton);
             mainPanel.add(selectButton);
+            mainPanel.add(havingButton);
 
             // Finish
             frame.add(mainPanel);
