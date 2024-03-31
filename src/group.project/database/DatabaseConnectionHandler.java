@@ -96,32 +96,53 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    public void deleteNPC(int nidToDelete, String nameToDelete) {
+    public void deleteNPC(ArrayList<Integer> nidsToDelete, ArrayList<String> namesToDelete) {
         try {
             String query = "DELETE FROM NPC WHERE ";
             String queryNidPart = "nid = (?) ";
             String queryNamePart = "nname = (?) ";
 
-            Boolean connect = nidToDelete != -1 && !Objects.equals(nameToDelete, "");
+            boolean isFirst = true;
 
-            if(nidToDelete != -1) {
-                query = query + queryNidPart;
-            }
-            if(connect) {
-                query = query + "AND ";
+            for(int i = 0; i < nidsToDelete.size(); i++) {
+                if(isFirst) {
+                    isFirst = false;
+                    query = query + queryNidPart;
+                } else {
+                    query = query + "OR " + queryNidPart;
+                }
             }
 
-            if(!Objects.equals(nameToDelete, "")) {
-                query = query + queryNamePart;
+            for(int i = 0; i < namesToDelete.size(); i++) {
+                if (isFirst) {
+                    isFirst = false;
+                    query = query + queryNamePart;
+                } else {
+                    query = query + "OR " + queryNamePart;
+                }
             }
 
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+
+            int index = 1;
+
+            for(int i = 0; i < nidsToDelete.size(); i++) {
+                ps.setInt(index, nidsToDelete.get(i));
+                index++;
+            }
+
+            for(int i = 0; i < namesToDelete.size(); i++) {
+                ps.setString(index, namesToDelete.get(i));
+                index++;
+            }
+
             int rowCount = ps.executeUpdate();
             if(rowCount == 0) {
-                System.out.println(WARNING_TAG + " NPC with nid " + nidToDelete + " or nname " + nameToDelete + " does not exist.");
+                System.out.println(WARNING_TAG + " A NPC to be deleted does not exist.");
             }
             connection.commit();
             ps.close();
+            System.out.println("Success!");
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             rollbackConnection();

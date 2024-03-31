@@ -32,6 +32,7 @@ CREATE TABLE Quest(
                       objectives VARCHAR(50),
                       UNIQUE(objectives),
                       FOREIGN KEY (giverid) REFERENCES NPC(nid)
+                        ON DELETE CASCADE
 );
 
 CREATE TABLE Shop(
@@ -40,11 +41,12 @@ CREATE TABLE Shop(
                      status VARCHAR(50) NOT NULL,
                      UNIQUE (ownerid),
                      FOREIGN KEY (ownerid) REFERENCES NPC (nid)
+                    ON DELETE CASCADE
 );
 
 CREATE TABLE Guild_2(rank INT PRIMARY KEY, goldBonus INT);
 
-CREATE TABLE Guild_3(gname VARCHAR(50) PRIMARY KEY, rank INT, FOREIGN KEY (rank) REFERENCES Guild_2 (rank));
+CREATE TABLE Guild_3(gname VARCHAR(50) PRIMARY KEY, rank INT, FOREIGN KEY (rank) REFERENCES Guild_2 (rank) ON DELETE CASCADE);
 
 
 CREATE TABLE Potion_2(type VARCHAR(50), sz VARCHAR(50), effect VARCHAR(50) NOT NULL, PRIMARY KEY(type, sz));
@@ -54,9 +56,9 @@ CREATE TABLE Weapon_2(type VARCHAR(50) NOT NULL, rarity VARCHAR(50) NOT NULL, da
 
 CREATE TABLE Player_2(exp INT PRIMARY KEY, lvl INT NOT NULL);
 
-CREATE TABLE Player_4(exp INT PRIMARY KEY, mana INT NOT NULL, FOREIGN KEY (exp) REFERENCES Player_2 (exp));
+CREATE TABLE Player_4(exp INT PRIMARY KEY, mana INT NOT NULL, FOREIGN KEY (exp) REFERENCES Player_2 (exp) ON DELETE CASCADE);
 
-CREATE TABLE Player_6(exp INT PRIMARY KEY, health INT NOT NULL, FOREIGN KEY (exp) REFERENCES Player_4 (exp));
+CREATE TABLE Player_6(exp INT PRIMARY KEY, health INT NOT NULL, FOREIGN KEY (exp) REFERENCES Player_4 (exp) ON DELETE CASCADE);
 CREATE TABLE Inventory(
                           invid INT PRIMARY KEY,
                           pname VARCHAR(50) NOT NULL,
@@ -71,13 +73,13 @@ CREATE TABLE Item(
                      questname VARCHAR(50),
                      value INT NOT NULL,
                      PRIMARY KEY (iname, iid),
-                     FOREIGN KEY (questname) REFERENCES Quest (qname),
-                     FOREIGN KEY (invid) REFERENCES Inventory (invid)
+                     FOREIGN KEY (questname) REFERENCES Quest (qname) ON DELETE SET NULL,
+                     FOREIGN KEY (invid) REFERENCES Inventory (invid) ON DELETE SET NULL
 );
 CREATE TABLE Potion_3(ptname VARCHAR(50), ptid INT, type VARCHAR(50) NOT NULL, sz VARCHAR(50) NOT NULL, shopid INT, price INT,
                       PRIMARY KEY (ptname, ptid), FOREIGN KEY (ptname, ptid) REFERENCES Item (iname, iid),
                       FOREIGN KEY (type, sz) REFERENCES Potion_2 (type, sz),
-                      FOREIGN KEY (shopid) REFERENCES Shop (shopid));
+                      FOREIGN KEY (shopid) REFERENCES Shop (shopid) ON DELETE SET NULL);
 
 
 
@@ -97,13 +99,13 @@ CREATE TABLE QuestItem(
 CREATE TABLE Player_7(
                          pname VARCHAR(50), sid INT, wname VARCHAR(50), wid INT, exp INT NOT NULL,
                          gname VARCHAR(50), role VARCHAR(50), PRIMARY KEY(pname, sid), FOREIGN KEY (sid) REFERENCES Server (sid),
-                         FOREIGN KEY (exp) REFERENCES Player_6 (exp), FOREIGN KEY (wid, wname) REFERENCES Weapon_3 (wid, wname),
-                         FOREIGN KEY (gname) REFERENCES Guild_3 (gname)
+                         FOREIGN KEY (exp) REFERENCES Player_6 (exp) ON DELETE CASCADE, FOREIGN KEY (wid, wname) REFERENCES Weapon_3 (wid, wname) ON DELETE SET NULL,
+                         FOREIGN KEY (gname) REFERENCES Guild_3 (gname) ON DELETE SET NULL
 );
 
 CREATE TABLE Does (qname VARCHAR(50), pname VARCHAR(50), sid INT, progress INT NOT NULL, PRIMARY KEY(qname, pname, sid),
-                   FOREIGN KEY (qname) REFERENCES Quest (qname),
-                   FOREIGN KEY (pname, sid) REFERENCES Player_7 (pname, sid));
+                   FOREIGN KEY (qname) REFERENCES Quest (qname) ON DELETE CASCADE,
+                   FOREIGN KEY (pname, sid) REFERENCES Player_7 (pname, sid) ON DELETE CASCADE);
 
 ALTER TABLE Inventory ADD FOREIGN KEY (pname, sid) REFERENCES Player_7 (pname, sid);
 
@@ -120,6 +122,7 @@ INSERT INTO NPC VALUES (3, 'Charles');
 INSERT INTO NPC VALUES (4, 'David');
 INSERT INTO NPC VALUES (5, 'Emily');
 INSERT INTO NPC VALUES (6, 'Frank');
+INSERT INTO NPC VALUES (7, 'John McTemporary');
 
 INSERT INTO Quest VALUES ('Buy a Weapon', 1, 100, 1, 'Buy your first weapon');
 INSERT INTO Quest VALUES ('Buy a Potion', 2, 150, 5, 'Buy your first potion');
@@ -132,6 +135,7 @@ INSERT INTO Shop VALUES(2, 2, 'open');
 INSERT INTO Shop VALUES(3, 3, 'closed');
 INSERT INTO Shop VALUES(4, 5, 'closed');
 INSERT INTO Shop VALUES(5, 6, 'open');
+INSERT INTO Shop VALUES(6, 7, 'open');
 
 INSERT INTO Guild_2 VALUES (1, 500);
 INSERT INTO Guild_2 VALUES (2, 1000);

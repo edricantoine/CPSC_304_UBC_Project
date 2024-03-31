@@ -9,6 +9,8 @@ import group.project.model.Player6Model;
 import group.project.model.Player7Model;
 import group.project.model.QuestModel;
 
+import java.util.ArrayList;
+
 public class MainController implements TransactionDelegate, LoginDelegate {
     private DatabaseConnectionHandler dbHandler = null;
     public MainController() {
@@ -19,8 +21,8 @@ public class MainController implements TransactionDelegate, LoginDelegate {
         dbHandler.insertPlayer(p2, p4, p6, p7);
     }
 
-    public void deleteNPC(int nidToDelete, String nameToDelete) {
-        dbHandler.deleteNPC(nidToDelete, nameToDelete);
+    public void deleteNPC(ArrayList<Integer> nidsToDelete, ArrayList<String> namesToDelete) {
+        dbHandler.deleteNPC(nidsToDelete, namesToDelete);
     }
 
     public Integer[] getRanksWithMostGuilds() {
