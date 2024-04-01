@@ -8,15 +8,22 @@ import group.project.model.Player7Model;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class InsertPanel {
     private ArrayList<JTextField> fields;
     private TransactionDelegate delegate = null;
-    public JPanel getInsertPanel(TransactionDelegate delegate) {
+    private JFrame frame;
+    private JPanel mainPanel;
+    private JPanel thisPanel;
+    public JPanel getInsertPanel(TransactionDelegate delegate, JFrame frame, JPanel mainPanel) {
         this.delegate = delegate;
+        this.frame = frame;
+        this.mainPanel = mainPanel;
         JPanel panel = new JPanel();
+        this.thisPanel = panel;
         fields = new ArrayList<>();
         panel.setLayout(new GridLayout(0, 2));
 
@@ -48,8 +55,10 @@ public class InsertPanel {
         // Add button to the panel for producing the alert
         JButton alertButton = new JButton("Add");
         alertButton.addActionListener(e -> doQuery(panel));
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> switchScreen(mainPanel, frame));
         panel.add(alertButton);
-
+        panel.add(backButton);
         return panel;
     }
 
@@ -65,27 +74,74 @@ public class InsertPanel {
         }
 
         String pname = fields.get(0).getText();
-        int sid = Integer.parseInt(fields.get(1).getText());
+        int sid = 0;
+        try {
+            sid = Integer.parseInt(fields.get(1).getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panel, "Error: invalid entry. Please check all entries.");
+            return;
+        }
         String wname = fields.get(3).getText();
 
-        int wid;
+        int wid = -1;
+
         if(Objects.equals(fields.get(2).getText(), "")) {
             wid = -1;
         } else {
-            wid = Integer.parseInt(fields.get(2).getText());
+            try {
+                wid = Integer.parseInt(fields.get(2).getText());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(panel, "Error: invalid entry. Please check all entries.");
+                return;
+            }
         }
-        int exp = Integer.parseInt(fields.get(5).getText());
+
+        int exp = 0;
+        try {
+            exp = Integer.parseInt(fields.get(5).getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panel, "Error: invalid entry. Please check all entries.");
+            return;
+        }
+
         String gname = fields.get(8).getText();
         String role = fields.get(9).getText();
-        int lvl = Integer.parseInt(fields.get(4).getText());
-        int mana = Integer.parseInt(fields.get(7).getText());
-        int health = Integer.parseInt(fields.get(6).getText());
+
+        int lvl = 0;
+        int mana = 0;
+        int health = 0;
+
+        try {
+            lvl = Integer.parseInt(fields.get(4).getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panel, "Error: invalid entry. Please check all entries.");
+            return;
+        }
+
+        try {
+            mana = Integer.parseInt(fields.get(7).getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panel, "Error: invalid entry. Please check all entries.");
+            return;
+        }
+
+        try {
+            health = Integer.parseInt(fields.get(6).getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panel, "Error: invalid entry. Please check all entries.");
+            return;
+        }
 
         Player7Model p7 = new Player7Model(pname, sid, wname, wid, exp, gname, role);
         Player6Model p6 = new Player6Model(exp, health);
         Player4Model p4 = new Player4Model(exp, mana);
         Player2Model p2 = new Player2Model(exp, lvl);
-        delegate.insertPlayer(p2, p4, p6, p7);
+        try {
+            delegate.insertPlayer(p2, p4, p6, p7);
+        } catch (SQLException e) {
+            String msg = "An error occurred. Exception: " + e.getMessage();
+            JOptionPane.showMessageDialog(panel, msg);
+        }
     }
 
     private void showAlert(JPanel panel) {
@@ -106,5 +162,17 @@ public class InsertPanel {
         // Show alert dialog with collected values
         JOptionPane.showMessageDialog(panel, message.toString(), "Item Successfully Added!",
                 JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void switchScreen(JPanel panel, JFrame frame) {
+        // Remove main panel from frame
+        frame.remove(this.thisPanel);
+
+        // Add second panel to frame
+        frame.add(panel);
+
+        // Repaint frame
+        frame.revalidate();
+        frame.repaint();
     }
 }

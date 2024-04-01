@@ -31,7 +31,7 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) {
+    public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) throws SQLException {
         try {
             String query2 = "INSERT /*+ IGNORE_ROW_ON_DUPKEY_INDEX (Player_2 (exp)) */ INTO Player_2 VALUES (?, ?)";
             PrintablePreparedStatement ps2 = new PrintablePreparedStatement(connection.prepareStatement(query2), query2, false);
@@ -96,6 +96,7 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             rollbackConnection();
+            throw e;
         }
     }
 

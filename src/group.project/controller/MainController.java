@@ -10,6 +10,7 @@ import group.project.model.Player6Model;
 import group.project.model.Player7Model;
 import group.project.model.QuestModel;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 // don't need this class actually, can delete later
@@ -20,7 +21,7 @@ public class MainController implements TransactionDelegate, LoginDelegate {
         dbHandler = new DatabaseConnectionHandler();
     }
 
-    public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) {
+    public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) throws SQLException {
         dbHandler.insertPlayer(p2, p4, p6, p7);
     }
 
