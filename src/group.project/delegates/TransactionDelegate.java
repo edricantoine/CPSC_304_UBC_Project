@@ -1,6 +1,11 @@
 package group.project.delegates;
 
-import group.project.model.*;
+import group.project.model.InventoryModel;
+import group.project.model.Player2Model;
+import group.project.model.Player4Model;
+import group.project.model.Player6Model;
+import group.project.model.Player7Model;
+import group.project.model.QuestModel;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
