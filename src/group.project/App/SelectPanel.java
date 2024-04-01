@@ -22,6 +22,9 @@ public class SelectPanel {
 
         // Create a dropdown with the specified options
         JComboBox<String> dropdown = new JComboBox<>();
+        dropdown.addItem("Quest name = 'Buy a Weapon'");
+        dropdown.addItem("Min level >= 5");
+        dropdown.addItem("Exp > 200");
         dropdown.addItem("Quest name = 'Buy a Weapon' or 'Buy a Potion'");
         dropdown.addItem("Min level >= 5 and Exp > 200");
         dropdown.addItem("Min level >= 5 or Exp > 200");
@@ -48,6 +51,15 @@ public class SelectPanel {
         // Determine the integer value and string to send to the backend based on the selected option
         String whereClause;
         switch (Objects.requireNonNull(selectedOption)) {
+            case "Quest name = 'Buy a Weapon'":
+                whereClause = "qname = 'Buy a Weapon'";
+                break;
+            case "Min level >= 5":
+                whereClause = "minlevel >= 5";
+                break;
+            case "Exp > 200":
+                whereClause = "exp > 200";
+                break;
             case "Quest name = 'Buy a Weapon' or 'Buy a Potion'":
                 whereClause = "qname = 'Buy a Weapon' OR qname = 'Buy a Potion'";
                 break;
