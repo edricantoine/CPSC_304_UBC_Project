@@ -48,13 +48,18 @@ public class DeletePanel {
             names.addAll(Arrays.asList(tempNames));
         }
 
-        if(!stringNids.isEmpty()) {
-            String[] splitNids = stringNids.split(",");
-            for (String splitNid : splitNids) {
-                nids.add(Integer.parseInt(splitNid));
+        try {
+            if (!stringNids.isEmpty()) {
+                String[] splitNids = stringNids.split(",");
+                for (String splitNid : splitNids) {
+                    nids.add(Integer.parseInt(splitNid));
+                }
             }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panel, "Only enter integers as NPC IDs.");
+            return;
         }
-
         delegate.deleteNPC(nids, names);
+
     }
 }
