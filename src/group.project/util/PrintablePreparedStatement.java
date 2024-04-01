@@ -8,6 +8,7 @@ import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
+// CITATION: THIS CODE IS DIRECTLY TAKEN FROM THE JAVA/ORACLE SAMPLE PROJECT CODE.
 public class PrintablePreparedStatement implements PreparedStatement {
 
     private final List<String> queryStrList;

@@ -3,11 +3,12 @@ package group.project.App;
 import group.project.database.DatabaseConnectionHandler;
 import group.project.delegates.LoginDelegate;
 import group.project.delegates.TransactionDelegate;
-import group.project.model.QuestModel;
+import group.project.model.InventoryModel;
 import group.project.model.Player2Model;
 import group.project.model.Player4Model;
 import group.project.model.Player6Model;
 import group.project.model.Player7Model;
+import group.project.model.QuestModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,12 +24,10 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
     private JPanel mainPanel;
 
     private JPanel updatePanel;
-
     private JPanel insertPanel;
-
     private JPanel deletePanel;
-
     private JPanel selectPanel;
+    private JPanel aggrGroupByPanel;
 
     private JPanel havingPanel;
 
@@ -62,12 +61,16 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         return dbHandler.getRanksWithMostGuilds();
     }
 
-    public int getTotalInventoryValue(int id) {
-        return dbHandler.getTotalInventoryValue(id);
+    public int getInventoryValue(int id) {
+        return dbHandler.getInventoryValue(id);
     }
 
     public QuestModel[] selectQuests(String whereClause) {
         return dbHandler.selectQuests(whereClause);
+    }
+
+    public InventoryModel[] getInventoryInfo() {
+        return dbHandler.getInventoryInfo();
     }
 
     public void login(String username, String password) {
@@ -93,21 +96,24 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             JButton deleteButton = new JButton("Delete NPC");
             JButton selectButton = new JButton("Select Quests");
             JButton havingButton = new JButton("Find ranks with most guilds");
+            JButton aggrGroupByButton = new JButton("Get Inventory Value"); // Aggregation Group By
 
             DeletePanel dp = new DeletePanel();
             InsertPanel ip = new InsertPanel();
             SelectPanel sp = new SelectPanel();
             HavingPanel hp = new HavingPanel();
-
+            AggrGroupByPanel agbp = new AggrGroupByPanel();
             deletePanel = dp.getDeletePanel(this);
             insertPanel = ip.getInsertPanel(this, frame, mainPanel);
             selectPanel = sp.getSelectPanel(this);
             havingPanel = hp.getHavingPanel(this, frame, mainPanel);
+            aggrGroupByPanel= agbp.getAggrGroupByPanel(this);
 
             insertButton.addActionListener(e -> switchScreen(insertPanel));
             deleteButton.addActionListener(e -> switchScreen(deletePanel));
             selectButton.addActionListener(e -> switchScreen(selectPanel));
             havingButton.addActionListener(e -> switchScreen(havingPanel));
+            aggrGroupByButton.addActionListener(e -> switchScreen(aggrGroupByPanel));
 
 
             // Add all Buttons
@@ -116,6 +122,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             mainPanel.add(deleteButton);
             mainPanel.add(selectButton);
             mainPanel.add(havingButton);
+            mainPanel.add(aggrGroupByButton);
 
             // Finish
             frame.add(mainPanel);
