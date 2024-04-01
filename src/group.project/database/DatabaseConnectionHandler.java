@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import group.project.model.InventoryModel;
 import group.project.model.Player2Model;
 import group.project.model.Player4Model;
 import group.project.model.Player6Model;
@@ -171,7 +172,7 @@ public class DatabaseConnectionHandler {
         return result.toArray(new Integer[result.size()]);
     }
 
-    public int getTotalInventoryValue(int id) {
+    public int getInventoryValue(int id) {
         int result = 0;
         try {
             String query =
@@ -218,6 +219,31 @@ public class DatabaseConnectionHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
         return result.toArray(new QuestModel[result.size()]);
+    }
+
+    public InventoryModel[] getInventoryInfo() {
+        ArrayList<InventoryModel> result = new ArrayList<InventoryModel>();
+
+        try {
+            String query = "SELECT * FROM Inventory";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                InventoryModel model = new InventoryModel(rs.getInt("invid"),
+                        rs.getString("pname"),
+                        rs.getInt("sid"),
+                        rs.getInt("sz"));
+                result.add(model);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return result.toArray(new InventoryModel[result.size()]);
     }
 
 

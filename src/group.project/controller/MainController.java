@@ -3,6 +3,7 @@ package group.project.controller;
 import group.project.database.DatabaseConnectionHandler;
 import group.project.delegates.LoginDelegate;
 import group.project.delegates.TransactionDelegate;
+import group.project.model.InventoryModel;
 import group.project.model.Player2Model;
 import group.project.model.Player4Model;
 import group.project.model.Player6Model;
@@ -31,12 +32,16 @@ public class MainController implements TransactionDelegate, LoginDelegate {
        return dbHandler.getRanksWithMostGuilds();
     }
 
-    public int getTotalInventoryValue(int id) {
-        return dbHandler.getTotalInventoryValue(id);
+    public int getInventoryValue(int id) {
+        return dbHandler.getInventoryValue(id);
     }
 
     public QuestModel[] selectQuests(String whereClause) {
         return dbHandler.selectQuests(whereClause);
+    }
+
+    public InventoryModel[] getInventoryInfo() {
+        return dbHandler.getInventoryInfo();
     }
 
 
