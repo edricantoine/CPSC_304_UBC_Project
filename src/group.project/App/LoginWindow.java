@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+// CITATION: THIS CODE IS DIRECTLY TAKEN FROM THE JAVA/ORACLE SAMPLE PROJECT CODE.
+
 public class LoginWindow extends JFrame implements ActionListener {
     private static final int TEXT_FIELD_WIDTH = 10;
     private static final int MAX_LOGIN_ATTEMPTS = 3;

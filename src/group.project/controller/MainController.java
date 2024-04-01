@@ -11,6 +11,8 @@ import group.project.model.QuestModel;
 
 import java.util.ArrayList;
 
+// don't need this class actually, can delete later
+
 public class MainController implements TransactionDelegate, LoginDelegate {
     private DatabaseConnectionHandler dbHandler = null;
     public MainController() {

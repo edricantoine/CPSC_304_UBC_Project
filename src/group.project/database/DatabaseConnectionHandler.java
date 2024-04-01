@@ -11,6 +11,8 @@ import group.project.model.Player7Model;
 import group.project.model.QuestModel;
 import group.project.util.PrintablePreparedStatement;
 
+// CITATION: THIS CODE TAKES HEAVILY FROM THE JAVA/ORACLE SAMPLE PROJECT CODE.
+
 public class DatabaseConnectionHandler {
     private static final String ORACLE_URL = "jdbc:oracle:thin:@dbhost.students.cs.ubc.ca:1522:stu";
     private static final String EXCEPTION_TAG = "[EXCEPTION]";

@@ -8,6 +8,7 @@ import group.project.model.QuestModel;
 
 import java.util.ArrayList;
 
+// CITATION: THIS CODE TAKES HEAVILY FROM THE JAVA/ORACLE SAMPLE PROJECT CODE.
 
 public interface TransactionDelegate {
     public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7);
