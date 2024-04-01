@@ -25,6 +25,10 @@ public class SelectPanel {
         dropdown.addItem("Quest name = 'Buy a Weapon'");
         dropdown.addItem("Min level >= 5");
         dropdown.addItem("Exp > 200");
+        dropdown.addItem("Quest name = 'Buy a Weapon' or 'Buy a Potion'");
+        dropdown.addItem("Min level >= 5 and Exp > 200");
+        dropdown.addItem("Min level >= 5 or Exp > 200");
+
 
         // Set preferred size for dropdown
         dropdown.setPreferredSize(new Dimension(250, 30));
@@ -55,6 +59,15 @@ public class SelectPanel {
                 break;
             case "Exp > 200":
                 whereClause = "exp > 200";
+                break;
+            case "Quest name = 'Buy a Weapon' or 'Buy a Potion'":
+                whereClause = "qname = 'Buy a Weapon' OR qname = 'Buy a Potion'";
+                break;
+            case "Min level >= 5 and Exp > 200":
+                whereClause = "minlevel >= 5 AND exp > 200";
+                break;
+            case "Min level >= 5 or Exp > 200":
+                whereClause = "minlevel >= 5 OR exp > 200";
                 break;
             default:
                 whereClause = "";
