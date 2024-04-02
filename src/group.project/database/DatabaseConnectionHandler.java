@@ -4,13 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import group.project.model.InventoryModel;
-import group.project.model.Player2Model;
-import group.project.model.Player4Model;
-import group.project.model.Player6Model;
-import group.project.model.Player7Model;
-import group.project.model.QuestModel;
-import group.project.model.ResultSetModel;
+import group.project.App.InvIDNotFoundException;
+import group.project.model.*;
 import group.project.util.PrintablePreparedStatement;
 
 // CITATION: THIS CODE TAKES HEAVILY FROM THE JAVA/ORACLE SAMPLE PROJECT CODE.
@@ -221,6 +216,45 @@ public class DatabaseConnectionHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
         return result.toArray(new QuestModel[result.size()]);
+    }
+
+    public ItemModel[] selectInvItem(Integer invID, Integer value) throws InvIDNotFoundException {
+        ArrayList<ItemModel> result = new ArrayList<ItemModel>();
+        try{
+            // Check to see if inventory exists with selected id
+            String query1 = "SELECT * FROM Inventory WHERE invid = (?)";
+            PrintablePreparedStatement ps1 = new PrintablePreparedStatement(connection.prepareStatement(query1), query1, false);
+
+            ps1.setInt(1, invID);
+            ResultSet rs1 = ps1.executeQuery();
+
+            if (!rs1.next()) {
+                throw new InvIDNotFoundException("Inventory ID not found");
+            }
+
+            // if inventory exists, proceed
+            String query = "SELECT * FROM Inventory JOIN Item ON Inventory.invid = Item.invid "
+            + " WHERE Inventory.invid = (?) AND value > (?)";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+
+            ps.setInt(1, invID);
+            ps.setInt(2, value);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                ItemModel model = new ItemModel(rs.getString("iname"),
+                        rs.getInt("iid"),
+                        rs.getInt("invid"),
+                        rs.getString("questname"),
+                        rs.getInt("value"));
+                result.add(model);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        return result.toArray(new ItemModel[result.size()]);
     }
 
     public InventoryModel[] getInventoryInfo() {
