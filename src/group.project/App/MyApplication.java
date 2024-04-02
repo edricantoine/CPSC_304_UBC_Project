@@ -55,6 +55,10 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         dbHandler.deleteNPC(nidsToDelete, namesToDelete);
     }
 
+    public void updateShop(String shopID, String ownerID, String status) {
+        dbHandler.updateShop(shopID, ownerID, status);
+    }
+
     public Integer[] getRanksWithMostGuilds() {
         return dbHandler.getRanksWithMostGuilds();
     }
@@ -81,7 +85,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
 
 
             // DEMO UPDATE - REMAKE THIS
-//        JButton button = new JButton("+ Add Item");
+//        JButton button = new JButton("Update Shop");
 //        UpdatePanel up = new UpdatePanel();
 //        updatePanel = up.getUpdatePanel();
 //        button.addActionListener(e -> switchScreen(updatePanel));
@@ -89,17 +93,21 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             JButton insertButton = new JButton("Insert Player");
             JButton deleteButton = new JButton("Delete NPC");
             JButton selectButton = new JButton("Select Quests");
+            JButton updateButton = new JButton("Update Shop");
 
             DeletePanel dp = new DeletePanel();
             InsertPanel ip = new InsertPanel();
             SelectPanel sp = new SelectPanel();
+            UpdatePanel up = new UpdatePanel();
             deletePanel = dp.getDeletePanel(this);
             insertPanel = ip.getInsertPanel(this);
             selectPanel = sp.getSelectPanel(this);
+            updatePanel = up.getUpdatePanel(this);
 
             insertButton.addActionListener(e -> switchScreen(insertPanel));
             deleteButton.addActionListener(e -> switchScreen(deletePanel));
             selectButton.addActionListener(e -> switchScreen(selectPanel));
+            updateButton.addActionListener(e -> switchScreen(updatePanel));
 
 
             // Add all Buttons
@@ -107,6 +115,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             mainPanel.add(insertButton);
             mainPanel.add(deleteButton);
             mainPanel.add(selectButton);
+            mainPanel.add(updateButton);
 
             // Finish
             frame.add(mainPanel);

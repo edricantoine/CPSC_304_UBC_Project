@@ -96,6 +96,19 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    public void updateShop(String shopID, String ownerID, String status) {
+//        try {
+//            String query = "UPDATE Shop SET ownerid = (?), status = (?) WHERE shopid = (?);";
+//
+//
+//
+//        } catch (SQLException e) {
+//            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+//            rollbackConnection();
+//        }
+//        System.out.println("TEST: " + shopID + " " + ownerID + " " + status);
+    }
+
     public void deleteNPC(ArrayList<Integer> nidsToDelete, ArrayList<String> namesToDelete) {
         try {
             String query = "DELETE FROM NPC WHERE ";

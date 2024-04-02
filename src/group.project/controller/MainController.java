@@ -25,6 +25,10 @@ public class MainController implements TransactionDelegate, LoginDelegate {
         dbHandler.deleteNPC(nidsToDelete, namesToDelete);
     }
 
+    public void updateShop(String shopID, String ownerID, String status) {
+        dbHandler.updateShop(shopID, ownerID, status);
+    }
+
     public Integer[] getRanksWithMostGuilds() {
        return dbHandler.getRanksWithMostGuilds();
     }

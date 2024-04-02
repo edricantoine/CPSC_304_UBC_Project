@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public interface TransactionDelegate {
     public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7);
     public void deleteNPC(ArrayList<Integer> nidsToDelete, ArrayList<String> namesToDelete);
+    public void updateShop(String shopID, String ownderID, String status);
     public Integer[] getRanksWithMostGuilds();
     public int getTotalInventoryValue(int id);
     QuestModel[] selectQuests(String whereClause);
