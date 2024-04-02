@@ -103,11 +103,11 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             SelectPanel sp = new SelectPanel();
             HavingPanel hp = new HavingPanel();
             AggrGroupByPanel agbp = new AggrGroupByPanel();
-            deletePanel = dp.getDeletePanel(this);
+            deletePanel = dp.getDeletePanel(this, frame, mainPanel);
             insertPanel = ip.getInsertPanel(this, frame, mainPanel);
-            selectPanel = sp.getSelectPanel(this);
+            selectPanel = sp.getSelectPanel(this, frame, mainPanel);
             havingPanel = hp.getHavingPanel(this, frame, mainPanel);
-            aggrGroupByPanel= agbp.getAggrGroupByPanel(this);
+            aggrGroupByPanel= agbp.getAggrGroupByPanel(this, frame, mainPanel);
 
             insertButton.addActionListener(e -> switchScreen(insertPanel));
             deleteButton.addActionListener(e -> switchScreen(deletePanel));

@@ -9,10 +9,15 @@ import javax.swing.table.DefaultTableModel;
 
 public class AggrGroupByPanel {
     private TransactionDelegate delegate = null;
-
-    public JPanel getAggrGroupByPanel(TransactionDelegate delegate) {
+    private JFrame frame;
+    private JPanel mainPanel;
+    private JPanel thisPanel;
+    public JPanel getAggrGroupByPanel(TransactionDelegate delegate, JFrame frame, JPanel mainPanel) {
         this.delegate = delegate;
+        this.frame = frame;
+        this.mainPanel = mainPanel;
         JPanel panel = new JPanel();
+        this.thisPanel = panel;
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add padding
 
@@ -36,6 +41,10 @@ public class AggrGroupByPanel {
         JButton applyButton = new JButton("Apply");
         applyButton.addActionListener(e -> doQuery(panel, inventoryIdField.getText()));
         panel.add(applyButton);
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> switchScreen(mainPanel, frame));
+        panel.add(backButton);
 
         return panel;
     }
@@ -72,6 +81,18 @@ public class AggrGroupByPanel {
     private void displayInventoryValue(JPanel panel, int inventoryValue) {
         String message = "Inventory Value: " + inventoryValue;
         JOptionPane.showMessageDialog(panel, message, "Inventory Value", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void switchScreen(JPanel panel, JFrame frame) {
+        // Remove main panel from frame
+        frame.remove(this.thisPanel);
+
+        // Add second panel to frame
+        frame.add(panel);
+
+        // Repaint frame
+        frame.revalidate();
+        frame.repaint();
     }
 
 }
