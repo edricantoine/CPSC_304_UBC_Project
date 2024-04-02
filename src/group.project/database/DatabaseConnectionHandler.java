@@ -10,6 +10,7 @@ import group.project.model.Player4Model;
 import group.project.model.Player6Model;
 import group.project.model.Player7Model;
 import group.project.model.QuestModel;
+import group.project.model.ResultSetModel;
 import group.project.util.PrintablePreparedStatement;
 
 // CITATION: THIS CODE TAKES HEAVILY FROM THE JAVA/ORACLE SAMPLE PROJECT CODE.
@@ -246,6 +247,88 @@ public class DatabaseConnectionHandler {
 
         return result.toArray(new InventoryModel[result.size()]);
     }
+
+    public String[] fetchTableNames() {
+        ArrayList<String> result = new ArrayList<>();
+        try {
+            String query = "SELECT table_name FROM user_tables"; // Query to fetch table names for the current user
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String tableName = rs.getString("table_name");
+                result.add(tableName);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        return result.toArray(new String[result.size()]);
+    }
+
+    public String[] fetchAttributesFromTable(String tableName) {
+        ArrayList<String> result = new ArrayList<>();
+        try {
+            // Execute a query to get the column names from the specified table
+            String query = "SELECT column_name FROM user_tab_columns WHERE table_name = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, tableName);
+            ResultSet rs = ps.executeQuery();
+
+            // Add column names to the list
+            while (rs.next()) {
+                String columnName = rs.getString("column_name");
+                result.add(columnName);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return result.toArray(new String[result.size()]);
+    }
+
+    public ResultSetModel projectionOnTable(String[] selectedAttributes, String tableName) {
+
+        try {
+            String attributesString = String.join(", ", selectedAttributes);
+            String selectQuery = "SELECT " + attributesString;
+            String fromQuery = " FROM " + tableName;
+            String query = selectQuery + fromQuery;
+
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY), query, false);
+            ResultSet rs = ps.executeQuery();
+            System.out.println("Success!");
+
+            ResultSetMetaData md = rs.getMetaData();
+            int numCols = md.getColumnCount();
+            ArrayList<String> headers = new ArrayList<>();
+            for(int i = 1; i <= numCols; i++) {
+                headers.add(md.getColumnName(i));
+            }
+            ArrayList<ArrayList<String>> rows = new ArrayList<>();
+            rs.beforeFirst();
+            while(rs.next()) {
+                ArrayList<String> temp = new ArrayList<>();
+                for(int i = 1; i <= numCols; i++) {
+                    temp.add(rs.getString(i));
+                }
+                rows.add(temp);
+            }
+
+            ResultSetModel rsm = new ResultSetModel(headers, rows, numCols);
+
+            rs.close();
+            ps.close();
+            return rsm;
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            return null;
+        }
+    }
+
 
 
     public void close() {

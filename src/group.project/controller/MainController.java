@@ -9,7 +9,9 @@ import group.project.model.Player4Model;
 import group.project.model.Player6Model;
 import group.project.model.Player7Model;
 import group.project.model.QuestModel;
+import group.project.model.ResultSetModel;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -43,6 +45,21 @@ public class MainController implements TransactionDelegate, LoginDelegate {
 
     public InventoryModel[] getInventoryInfo() {
         return dbHandler.getInventoryInfo();
+    }
+
+    @Override
+    public String[] fetchTableNames() {
+        return dbHandler.fetchTableNames();
+    }
+
+    @Override
+    public String[] fetchAttributesFromTable(String tableName) {
+        return dbHandler.fetchAttributesFromTable(tableName);
+    }
+
+    @Override
+    public ResultSetModel projectionOnTable(String[] selectedAttributes, String tableName) {
+        return dbHandler.projectionOnTable(selectedAttributes, tableName);
     }
 
 
