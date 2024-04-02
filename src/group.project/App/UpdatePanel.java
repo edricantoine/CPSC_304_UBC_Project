@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class UpdatePanel {
     private TransactionDelegate delegate = null;
@@ -56,9 +57,37 @@ public class UpdatePanel {
     }
 
     private void doQuery(JPanel panel) {
-        Integer intShopID = Integer.parseInt(this.shopID.getText());
-        Integer intOwnerID = Integer.parseInt(this.ownerID.getText());
+        Integer intShopID = -1;
+        Integer intOwnerID = -1;
+
+        try {
+            intShopID = Integer.parseInt(this.shopID.getText());
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(panel, "Please enter a valid shop ID");
+            return;
+        }
+
+        if(!Objects.equals(this.ownerID.getText(), "")) {
+            try {
+                intOwnerID = Integer.parseInt(this.ownerID.getText());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(panel, "Invalid owner ID entered.");
+                return;
+            }
+        }
+
         String strStatus = this.status.getText();
+
+        if(Objects.equals(strStatus, "") && intOwnerID == -1) {
+            JOptionPane.showMessageDialog(panel, "Please update some column.");
+            return;
+        }
+
+        if(intShopID == -1) {
+            JOptionPane.showMessageDialog(panel, "Please enter a shop ID.");
+            return;
+        }
+
         try{
             delegate.updateShop(intShopID, intOwnerID, strStatus);
         } catch (SQLException e){

@@ -103,13 +103,45 @@ public class DatabaseConnectionHandler {
 
     public void updateShop(Integer shopID, Integer ownerID, String status) throws SQLException {
         try {
-            String query = "UPDATE Shop SET ownerid = (?), status = (?) WHERE shopid = (?)";
+            String query = "UPDATE Shop SET ";
+            String ownerIDpart = "ownerid = (?)";
+            String statuspart = "status = (?) ";
+            String endpart = "WHERE shopid = (?)";
+
+            // one of these if statements must be true
+
+            if(ownerID != -1) {
+                if(!Objects.equals(status, "")) {
+                    ownerIDpart = ownerIDpart + ", ";
+                } else {
+                    ownerIDpart = ownerIDpart + " ";
+                }
+                query = query + ownerIDpart;
+            }
+
+            if(!Objects.equals(status, "")) {
+                query = query + statuspart;
+
+            }
+
+            query = query + endpart;
+
 
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            if(ownerID != -1 && !Objects.equals(status, "")) {
+                ps.setInt(1, ownerID);
+                ps.setString(2, status);
+                ps.setInt(3, shopID);
+            } else {
+                if(ownerID == -1) {
+                    ps.setString(1, status);
+                    ps.setInt(2, shopID);
+                } else {
+                    ps.setInt(1, ownerID);
+                    ps.setInt(2, shopID);
 
-            ps.setInt(1, ownerID);
-            ps.setString(2, status);
-            ps.setInt(3, shopID);
+                }
+            }
 
             int rowCount = ps.executeUpdate();
             System.out.println("Rowcount: " + rowCount);
