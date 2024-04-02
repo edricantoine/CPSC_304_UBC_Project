@@ -3,6 +3,7 @@ package group.project.App;
 import group.project.database.DatabaseConnectionHandler;
 import group.project.delegates.LoginDelegate;
 import group.project.delegates.TransactionDelegate;
+import group.project.model.AvgLevelModel;
 import group.project.model.InventoryModel;
 import group.project.model.Player2Model;
 import group.project.model.Player4Model;
@@ -34,6 +35,8 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
     private JPanel havingPanel;
 
     private JPanel projectionPanel;
+
+    private JPanel nestedAggPanel;
 
     public MyApplication() {
         dbHandler = new DatabaseConnectionHandler();
@@ -89,6 +92,10 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         return dbHandler.projectionOnTable(selectedAttributes, tableName);
     }
 
+    public ArrayList<AvgLevelModel> getAvgLevelInGuild() {
+        return dbHandler.getAvgLevelInGuild();
+    }
+
 
 
     public void login(String username, String password) {
@@ -116,6 +123,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             JButton havingButton = new JButton("Find ranks with most guilds");
             JButton aggrGroupByButton = new JButton("Get Inventory Value"); // Aggregation Group By
             JButton projButton = new JButton("Select attributes from table");
+            JButton naggButton = new JButton("Get average player level from guilds");
 
 
             DeletePanel dp = new DeletePanel();
@@ -124,6 +132,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             HavingPanel hp = new HavingPanel();
             AggrGroupByPanel agbp = new AggrGroupByPanel();
             ProjectionPanel pjp = new ProjectionPanel();
+            NestedAggPanel nap = new NestedAggPanel();
 
             deletePanel = dp.getDeletePanel(this, frame, mainPanel);
             insertPanel = ip.getInsertPanel(this, frame, mainPanel);
@@ -131,6 +140,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             havingPanel = hp.getHavingPanel(this, frame, mainPanel);
             aggrGroupByPanel= agbp.getAggrGroupByPanel(this, frame, mainPanel);
             projectionPanel = pjp.getProjectionPanel(this, frame, mainPanel);
+            nestedAggPanel = nap.getNestedAggPanel(this, frame, mainPanel);
 
             insertButton.addActionListener(e -> switchScreen(insertPanel));
             deleteButton.addActionListener(e -> switchScreen(deletePanel));
@@ -138,6 +148,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             havingButton.addActionListener(e -> switchScreen(havingPanel));
             aggrGroupByButton.addActionListener(e -> switchScreen(aggrGroupByPanel));
             projButton.addActionListener(e -> switchScreen(projectionPanel));
+            naggButton.addActionListener(e -> switchScreen(nestedAggPanel));
 
 
             // Add all Buttons
@@ -148,6 +159,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             mainPanel.add(havingButton);
             mainPanel.add(aggrGroupByButton);
             mainPanel.add(projButton);
+            mainPanel.add(naggButton);
             // Finish
             frame.add(mainPanel);
             frame.setVisible(true);

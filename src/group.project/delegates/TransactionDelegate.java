@@ -1,5 +1,6 @@
 package group.project.delegates;
 
+import group.project.model.AvgLevelModel;
 import group.project.model.InventoryModel;
 import group.project.model.Player2Model;
 import group.project.model.Player4Model;
@@ -23,6 +24,7 @@ public interface TransactionDelegate {
     public InventoryModel[] getInventoryInfo();
     String[] fetchTableNames();
     String[] fetchAttributesFromTable(String tableName);
+    ArrayList<AvgLevelModel> getAvgLevelInGuild();
 
     ResultSetModel projectionOnTable(String[] selectedAttributes, String tableName);
 }
