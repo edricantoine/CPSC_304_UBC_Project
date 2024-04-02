@@ -73,6 +73,20 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         return dbHandler.getInventoryInfo();
     }
 
+    public String[] fetchTableNames() {
+        return dbHandler.fetchTableNames();
+    }
+
+    public String[] fetchAttributesFromTable(String tableName) {
+        return dbHandler.fetchAttributesFromTable(tableName);
+    }
+
+    public Class<?> projectionOnTable(String[] selectedAttributes, String tableName) {
+        return dbHandler.projectionOnTable(selectedAttributes, tableName);
+    }
+
+
+
     public void login(String username, String password) {
         boolean connected = dbHandler.login(username, password);
         if(connected) {

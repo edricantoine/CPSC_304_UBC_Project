@@ -247,6 +247,79 @@ public class DatabaseConnectionHandler {
         return result.toArray(new InventoryModel[result.size()]);
     }
 
+    public String[] fetchTableNames() {
+        ArrayList<String> result = new ArrayList<>();
+        try {
+            String query = "SELECT table_name FROM user_tables"; // Query to fetch table names for the current user
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String tableName = rs.getString("table_name");
+                result.add(tableName);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        return result.toArray(new String[result.size()]);
+    }
+
+    public String[] fetchAttributesFromTable(String tableName) {
+        ArrayList<String> result = new ArrayList<>();
+        try {
+            // Execute a query to get the column names from the specified table
+            String query = "SELECT column_name FROM user_tab_columns WHERE table_name = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, tableName);
+            ResultSet rs = ps.executeQuery();
+
+            // Add column names to the list
+            while (rs.next()) {
+                String columnName = rs.getString("column_name");
+                result.add(columnName);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return result.toArray(new String[result.size()]);
+    }
+
+    public Class<?> projectionOnTable(String[] selectedAttributes, String tableName) {
+        ArrayList<?> result = new ArrayList<>();
+
+        try {
+            String attributesString = String.join(", ", selectedAttributes);
+            String selectQuery = "SELECT " + attributesString;
+            String fromQuery = "FROM " + tableName;
+            String query = selectQuery + fromQuery;
+
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                //TODO: how to know which model it'll be?
+//                InventoryModel model = new InventoryModel(rs.getInt("invid"),
+//                        rs.getString("pname"),
+//                        rs.getInt("sid"),
+//                        rs.getInt("sz"));
+//                result.add(model);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+//        return result.toArray(new InventoryModel[result.size()]);
+        return null;
+    }
+
+
 
     public void close() {
         try {

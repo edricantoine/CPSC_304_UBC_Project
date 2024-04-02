@@ -18,7 +18,9 @@ public interface TransactionDelegate {
     public Integer[] getRanksWithMostGuilds();
     public int getInventoryValue(int id);
     QuestModel[] selectQuests(String whereClause);
-
     public InventoryModel[] getInventoryInfo();
+    String[] fetchTableNames();
+    String[] fetchAttributesFromTable(String tableName);
 
+    Class<?> projectionOnTable(String[] selectedAttributes, String tableName);
 }
