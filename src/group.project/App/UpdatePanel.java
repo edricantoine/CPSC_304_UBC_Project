@@ -4,6 +4,7 @@ import group.project.delegates.TransactionDelegate;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class UpdatePanel {
@@ -11,9 +12,15 @@ public class UpdatePanel {
     private JTextField shopID = null;
     private JTextField ownerID = null;
     private JTextField status = null;
-    public JPanel getUpdatePanel(TransactionDelegate delegate) {
+    private JFrame frame;
+    private JPanel mainPanel;
+    private JPanel thisPanel;
+    public JPanel getUpdatePanel(TransactionDelegate delegate, JFrame frame, JPanel mainPanel) {
         this.delegate = delegate;
+        this.frame = frame;
+        this.mainPanel = mainPanel;
         JPanel panel = new JPanel();
+        this.thisPanel = panel;
         panel.setLayout(new GridLayout(0, 2));
 
         // Add labels and text fields to the panel
@@ -41,15 +48,28 @@ public class UpdatePanel {
         updateButton.addActionListener(e -> doQuery(panel));
         panel.add(updateButton);
 
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> switchScreen(mainPanel, frame));
+        panel.add(backButton);
+
         return panel;
     }
 
     private void doQuery(JPanel panel) {
-        String strShopID = this.shopID.getText();
-        String strOwnerID = this.ownerID.getText();
+        Integer intShopID = Integer.parseInt(this.shopID.getText());
+        Integer intOwnerID = Integer.parseInt(this.ownerID.getText());
         String strStatus = this.status.getText();
-
-        delegate.updateShop(strShopID, strOwnerID, strStatus);
+        try{
+            delegate.updateShop(intShopID, intOwnerID, strStatus);
+        } catch (SQLException e){
+            if(e.getErrorCode() == 1) {
+                String uniqueMsg = "Each shop owner must be unique - please try again.";
+                JOptionPane.showMessageDialog(panel, uniqueMsg);
+            } else {
+                String msg = "An error occurred. Exception: " + e.getMessage();
+                JOptionPane.showMessageDialog(panel, msg);
+            }
+        }
     }
 
     private void showAlert(JPanel panel) {
@@ -69,5 +89,17 @@ public class UpdatePanel {
         // Show alert dialog with collected values
         JOptionPane.showMessageDialog(panel, message.toString(), "Item Successfully Added!",
                 JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void switchScreen(JPanel panel, JFrame frame) {
+        // Remove main panel from frame
+        frame.remove(this.thisPanel);
+
+        // Add second panel to frame
+        frame.add(panel);
+
+        // Repaint frame
+        frame.revalidate();
+        frame.repaint();
     }
 }

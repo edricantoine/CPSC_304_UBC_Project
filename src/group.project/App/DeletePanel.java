@@ -11,9 +11,16 @@ public class DeletePanel {
     private TransactionDelegate delegate = null;
     private JTextField nidsField = null;
     private JTextField nnamesField = null;
-    public JPanel getDeletePanel(TransactionDelegate delegate) {
+
+    private JFrame frame;
+    private JPanel mainPanel;
+    private JPanel thisPanel;
+    public JPanel getDeletePanel(TransactionDelegate delegate, JFrame frame, JPanel mainPanel) {
         this.delegate = delegate;
+        this.frame = frame;
+        this.mainPanel = mainPanel;
         JPanel panel = new JPanel();
+        this.thisPanel = panel;
         panel.setLayout(new GridLayout(0, 2));
 
         JLabel nidsLabel = new JLabel("NPC IDs to delete (separate with comma)");
@@ -33,6 +40,9 @@ public class DeletePanel {
         JButton doButton = new JButton("Delete NPCs");
         doButton.addActionListener(e -> doQuery(panel));
         panel.add(doButton);
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> switchScreen(mainPanel, frame));
+        panel.add(backButton);
 
         return panel;
     }
@@ -48,13 +58,30 @@ public class DeletePanel {
             names.addAll(Arrays.asList(tempNames));
         }
 
-        if(!stringNids.isEmpty()) {
-            String[] splitNids = stringNids.split(",");
-            for (String splitNid : splitNids) {
-                nids.add(Integer.parseInt(splitNid));
+        try {
+            if (!stringNids.isEmpty()) {
+                String[] splitNids = stringNids.split(",");
+                for (String splitNid : splitNids) {
+                    nids.add(Integer.parseInt(splitNid));
+                }
             }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panel, "Only enter integers as NPC IDs.");
+            return;
         }
-
         delegate.deleteNPC(nids, names);
+
+    }
+
+    private void switchScreen(JPanel panel, JFrame frame) {
+        // Remove main panel from frame
+        frame.remove(this.thisPanel);
+
+        // Add second panel to frame
+        frame.add(panel);
+
+        // Repaint frame
+        frame.revalidate();
+        frame.repaint();
     }
 }

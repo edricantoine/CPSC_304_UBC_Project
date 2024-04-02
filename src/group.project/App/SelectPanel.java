@@ -10,10 +10,16 @@ import java.util.Objects;
 
 public class SelectPanel {
     private TransactionDelegate delegate = null;
+    private JFrame frame;
+    private JPanel mainPanel;
+    private JPanel thisPanel;
 
-    public JPanel getSelectPanel(TransactionDelegate delegate) {
+    public JPanel getSelectPanel(TransactionDelegate delegate, JFrame frame, JPanel mainPanel) {
         this.delegate = delegate;
+        this.frame = frame;
+        this.mainPanel = mainPanel;
         JPanel panel = new JPanel();
+        this.thisPanel = panel;
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add padding
 
@@ -25,6 +31,10 @@ public class SelectPanel {
         dropdown.addItem("Quest name = 'Buy a Weapon'");
         dropdown.addItem("Min level >= 5");
         dropdown.addItem("Exp > 200");
+        dropdown.addItem("Quest name = 'Buy a Weapon' or 'Buy a Potion'");
+        dropdown.addItem("Min level >= 5 and Exp > 200");
+        dropdown.addItem("Min level >= 5 or Exp > 200");
+
 
         // Set preferred size for dropdown
         dropdown.setPreferredSize(new Dimension(250, 30));
@@ -37,6 +47,10 @@ public class SelectPanel {
         JButton applyButton = new JButton("Apply");
         applyButton.addActionListener(e -> doQuery(panel, dropdown));
         panel.add(applyButton);
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> switchScreen(mainPanel, frame));
+        panel.add(backButton);
 
         return panel;
     }
@@ -55,6 +69,15 @@ public class SelectPanel {
                 break;
             case "Exp > 200":
                 whereClause = "exp > 200";
+                break;
+            case "Quest name = 'Buy a Weapon' or 'Buy a Potion'":
+                whereClause = "qname = 'Buy a Weapon' OR qname = 'Buy a Potion'";
+                break;
+            case "Min level >= 5 and Exp > 200":
+                whereClause = "minlevel >= 5 AND exp > 200";
+                break;
+            case "Min level >= 5 or Exp > 200":
+                whereClause = "minlevel >= 5 OR exp > 200";
                 break;
             default:
                 whereClause = "";
@@ -82,5 +105,17 @@ public class SelectPanel {
 
         // Show the table in a dialog
         JOptionPane.showMessageDialog(null, scrollPane, "Quest Information", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private void switchScreen(JPanel panel, JFrame frame) {
+        // Remove main panel from frame
+        frame.remove(this.thisPanel);
+
+        // Add second panel to frame
+        frame.add(panel);
+
+        // Repaint frame
+        frame.revalidate();
+        frame.repaint();
     }
 }
