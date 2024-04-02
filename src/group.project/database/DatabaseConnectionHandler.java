@@ -10,6 +10,7 @@ import group.project.model.Player4Model;
 import group.project.model.Player6Model;
 import group.project.model.Player7Model;
 import group.project.model.QuestModel;
+import group.project.model.ResultSetModel;
 import group.project.util.PrintablePreparedStatement;
 
 // CITATION: THIS CODE TAKES HEAVILY FROM THE JAVA/ORACLE SAMPLE PROJECT CODE.
@@ -289,34 +290,43 @@ public class DatabaseConnectionHandler {
         return result.toArray(new String[result.size()]);
     }
 
-    public Class<?> projectionOnTable(String[] selectedAttributes, String tableName) {
-        ArrayList<?> result = new ArrayList<>();
+    public ResultSetModel projectionOnTable(String[] selectedAttributes, String tableName) {
 
         try {
             String attributesString = String.join(", ", selectedAttributes);
             String selectQuery = "SELECT " + attributesString;
-            String fromQuery = "FROM " + tableName;
+            String fromQuery = " FROM " + tableName;
             String query = selectQuery + fromQuery;
 
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY), query, false);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                //TODO: how to know which model it'll be?
-//                InventoryModel model = new InventoryModel(rs.getInt("invid"),
-//                        rs.getString("pname"),
-//                        rs.getInt("sid"),
-//                        rs.getInt("sz"));
-//                result.add(model);
+            System.out.println("Success!");
+
+            ResultSetMetaData md = rs.getMetaData();
+            int numCols = md.getColumnCount();
+            ArrayList<String> headers = new ArrayList<>();
+            for(int i = 1; i <= numCols; i++) {
+                headers.add(md.getColumnName(i));
             }
+            ArrayList<ArrayList<String>> rows = new ArrayList<>();
+            rs.beforeFirst();
+            while(rs.next()) {
+                ArrayList<String> temp = new ArrayList<>();
+                for(int i = 1; i <= numCols; i++) {
+                    temp.add(rs.getString(i));
+                }
+                rows.add(temp);
+            }
+
+            ResultSetModel rsm = new ResultSetModel(headers, rows, numCols);
 
             rs.close();
             ps.close();
+            return rsm;
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            return null;
         }
-
-//        return result.toArray(new InventoryModel[result.size()]);
-        return null;
     }
 
 
