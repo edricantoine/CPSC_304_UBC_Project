@@ -4,6 +4,7 @@ import group.project.database.DatabaseConnectionHandler;
 import group.project.delegates.LoginDelegate;
 import group.project.delegates.TransactionDelegate;
 
+
 import group.project.model.AvgLevelModel;
 import group.project.model.DivisionModel;
 import group.project.model.InventoryModel;
@@ -14,6 +15,8 @@ import group.project.model.Player6Model;
 import group.project.model.Player7Model;
 import group.project.model.QuestModel;
 import group.project.model.ResultSetModel;
+import group.project.model.ShopModel;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -69,6 +72,10 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         dbHandler.deleteNPC(nidsToDelete, namesToDelete);
     }
 
+    public void updateShop(Integer shopID, Integer ownerID, String status) throws SQLException {
+        dbHandler.updateShop(shopID, ownerID, status);
+    }
+
     public Integer[] getRanksWithMostGuilds() {
         return dbHandler.getRanksWithMostGuilds();
     }
@@ -84,6 +91,10 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         return dbHandler.selectInvItem(invID, value);
     }
 
+
+    public ShopModel[] getShopInfo() {
+        return dbHandler.getShopInfo();
+    }
 
     public InventoryModel[] getInventoryInfo() {
         return dbHandler.getInventoryInfo();
@@ -124,7 +135,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
 
 
             // DEMO UPDATE - REMAKE THIS
-//        JButton button = new JButton("+ Add Item");
+//        JButton button = new JButton("Update Shop");
 //        UpdatePanel up = new UpdatePanel();
 //        updatePanel = up.getUpdatePanel();
 //        button.addActionListener(e -> switchScreen(updatePanel));
@@ -132,6 +143,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             JButton insertButton = new JButton("Insert Player");
             JButton deleteButton = new JButton("Delete NPC");
             JButton selectButton = new JButton("Select Quests");
+            JButton updateButton = new JButton("Update Shop");
             JButton havingButton = new JButton("Find ranks with most guilds");
             JButton aggrGroupByButton = new JButton("Get Inventory Value"); // Aggregation Group By
             JButton projButton = new JButton("Select attributes from table");
@@ -139,10 +151,11 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             JButton naggButton = new JButton("Get average player level from guilds");
             JButton divisionButton = new JButton("Get All Players Who Completed All Quests (division)");
 
-
             DeletePanel dp = new DeletePanel();
             InsertPanel ip = new InsertPanel();
             SelectPanel sp = new SelectPanel();
+            UpdatePanel up = new UpdatePanel();
+
             HavingPanel hp = new HavingPanel();
             AggrGroupByPanel agbp = new AggrGroupByPanel();
             ProjectionPanel pjp = new ProjectionPanel();
@@ -154,6 +167,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             insertPanel = ip.getInsertPanel(this, frame, mainPanel);
             selectPanel = sp.getSelectPanel(this, frame, mainPanel);
             havingPanel = hp.getHavingPanel(this, frame, mainPanel);
+            updatePanel = up.getUpdatePanel(this, frame, mainPanel);
             aggrGroupByPanel= agbp.getAggrGroupByPanel(this, frame, mainPanel);
             projectionPanel = pjp.getProjectionPanel(this, frame, mainPanel);
             joinPanel = jp.getJoinPanel(this, frame, mainPanel);
@@ -163,6 +177,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             insertButton.addActionListener(e -> switchScreen(insertPanel));
             deleteButton.addActionListener(e -> switchScreen(deletePanel));
             selectButton.addActionListener(e -> switchScreen(selectPanel));
+            updateButton.addActionListener(e -> switchScreen(updatePanel));
             havingButton.addActionListener(e -> switchScreen(havingPanel));
             aggrGroupByButton.addActionListener(e -> switchScreen(aggrGroupByPanel));
             projButton.addActionListener(e -> switchScreen(projectionPanel));
@@ -176,6 +191,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             mainPanel.add(insertButton);
             mainPanel.add(deleteButton);
             mainPanel.add(selectButton);
+            mainPanel.add(updateButton);
             mainPanel.add(havingButton);
             mainPanel.add(aggrGroupByButton);
             mainPanel.add(projButton);
