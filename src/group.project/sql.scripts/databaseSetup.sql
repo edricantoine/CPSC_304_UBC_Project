@@ -241,8 +241,16 @@ INSERT INTO Potion_3 VALUES ('Large Potion of Strength', 8, 'strength', 'large',
 INSERT INTO Potion_3 VALUES ('Small Potion of Defense', 9, 'defense', 'small', 1, 50);
 INSERT INTO Potion_3 VALUES ('Extra-Large Potion of Evasion', 10, 'evasion', 'extra-large', 1, 125);
 
-INSERT INTO Does VALUES('Buy a Weapon', 'Player1', 1, 50);
+INSERT INTO Does VALUES('Buy a Weapon', 'Player1', 1, 100);
+INSERT INTO Does VALUES('Slay a Monster', 'Player1', 1, 100);
+INSERT INTO Does VALUES('Deliver a Letter', 'Player1', 1, 100);
+INSERT INTO Does VALUES('Buy a Potion', 'Player1', 1, 100);
+INSERT INTO Does VALUES('Join a Guild', 'Player1', 1, 100);
 INSERT INTO Does VALUES('Slay a Monster', 'Leeroy Jenkins', 1, 100);
+INSERT INTO Does VALUES('Buy a Weapon', 'Leeroy Jenkins', 1, 100);
+INSERT INTO Does VALUES('Deliver a Letter', 'Leeroy Jenkins', 1, 100);
+INSERT INTO Does VALUES('Buy a Potion', 'Leeroy Jenkins', 1, 100);
+INSERT INTO Does VALUES('Join a Guild', 'Leeroy Jenkins', 1, 100);
 INSERT INTO Does VALUES('Deliver a Letter', 'Chuck E. Cheese', 2, 90);
 INSERT INTO Does VALUES('Buy a Potion', 'Homer Simpsonn', 3, 80);
 INSERT INTO Does VALUES('Join a Guild', 'GandalfTheCool', 5, 2);
