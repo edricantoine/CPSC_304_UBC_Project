@@ -57,7 +57,7 @@ public class DivisionPanel {
 
     private void displayItems(JPanel panel, DivisionModel[] players, int lvl) {
 
-        String[] columnNames = {"Player Name", "Quests Completed < " + lvl};
+        String[] columnNames = {"Player Name", "Quests Completed where level <= " + lvl};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
         JTable table = new JTable(model);
 

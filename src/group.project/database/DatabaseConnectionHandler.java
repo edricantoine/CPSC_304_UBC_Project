@@ -227,12 +227,13 @@ public class DatabaseConnectionHandler {
         ArrayList<DivisionModel> result = new ArrayList<>();
         try {
             String queries = "SELECT DISTINCT D.pname AS name, COUNT(DISTINCT D.qname) AS qc FROM Does D INNER JOIN Quest Q1 ON D.qname = Q1.qname "
-                    + "WHERE D.PROGRESS = 100 "
+                    + "WHERE D.PROGRESS = 100 AND Q1.MINLEVEL <= (?) "
                     + "GROUP BY D.pname HAVING COUNT(DISTINCT D.qname) = (SELECT COUNT(Q2.qname) FROM Quest Q2 "
                     + "WHERE Q2.MINLEVEL <= (?))";
 
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(queries), queries, false);
             ps.setInt(1, lvl);
+            ps.setInt(2, lvl);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
@@ -244,9 +245,6 @@ public class DatabaseConnectionHandler {
             ps.close();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-            System.out.println("SQL State: " + e.getSQLState());
-            System.out.println("Error Code: " + e.getErrorCode());
-            System.out.println("Cause: " + e.getCause());
             rollbackConnection();
         }
         return result.toArray(new DivisionModel[result.size()]);

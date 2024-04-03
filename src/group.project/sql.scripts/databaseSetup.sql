@@ -245,13 +245,12 @@ INSERT INTO Does VALUES('Buy a Weapon', 'Player1', 1, 100);
 INSERT INTO Does VALUES('Slay a Monster', 'Player1', 1, 100);
 INSERT INTO Does VALUES('Deliver a Letter', 'Player1', 1, 100);
 INSERT INTO Does VALUES('Buy a Potion', 'Player1', 1, 100);
-INSERT INTO Does VALUES('Join a Guild', 'Player1', 1, 100);
 INSERT INTO Does VALUES('Slay a Monster', 'Leeroy Jenkins', 1, 100);
 INSERT INTO Does VALUES('Buy a Weapon', 'Leeroy Jenkins', 1, 100);
 INSERT INTO Does VALUES('Deliver a Letter', 'Leeroy Jenkins', 1, 100);
 INSERT INTO Does VALUES('Buy a Potion', 'Leeroy Jenkins', 1, 100);
 INSERT INTO Does VALUES('Join a Guild', 'Leeroy Jenkins', 1, 100);
+INSERT INTO Does VALUES('Buy a Weapon', 'Chuck E. Cheese', 2, 100);
 INSERT INTO Does VALUES('Deliver a Letter', 'Chuck E. Cheese', 2, 90);
 INSERT INTO Does VALUES('Buy a Potion', 'Homer Simpsonn', 3, 80);
-INSERT INTO Does VALUES('Join a Guild', 'GandalfTheCool', 5, 2);
 
