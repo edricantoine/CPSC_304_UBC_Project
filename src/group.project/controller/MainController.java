@@ -4,7 +4,16 @@ import group.project.App.InvIDNotFoundException;
 import group.project.database.DatabaseConnectionHandler;
 import group.project.delegates.LoginDelegate;
 import group.project.delegates.TransactionDelegate;
-import group.project.model.*;
+
+import group.project.model.AvgLevelModel;
+import group.project.model.InventoryModel;
+import group.project.model.Player2Model;
+import group.project.model.Player4Model;
+import group.project.model.Player6Model;
+import group.project.model.Player7Model;
+import group.project.model.QuestModel;
+import group.project.model.ResultSetModel;
+import group.project.model.ItemModel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,6 +69,10 @@ public class MainController implements TransactionDelegate, LoginDelegate {
         return dbHandler.projectionOnTable(selectedAttributes, tableName);
     }
 
+    @Override
+    public ArrayList<AvgLevelModel> getAvgLevelInGuild() {
+        return null;
+    }
 
     public void login(String username, String password) {
         boolean connected = dbHandler.login(username, password);

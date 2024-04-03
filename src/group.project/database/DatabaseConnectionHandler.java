@@ -1,11 +1,24 @@
 package group.project.database;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
 import group.project.App.InvIDNotFoundException;
-import group.project.model.*;
+
+
+import group.project.model.AvgLevelModel;
+import group.project.model.InventoryModel;
+import group.project.model.Player2Model;
+import group.project.model.Player4Model;
+import group.project.model.Player6Model;
+import group.project.model.Player7Model;
+import group.project.model.QuestModel;
+import group.project.model.ResultSetModel;
+import group.project.model.ItemModel;
+
 import group.project.util.PrintablePreparedStatement;
 
 // CITATION: THIS CODE TAKES HEAVILY FROM THE JAVA/ORACLE SAMPLE PROJECT CODE.
@@ -361,6 +374,39 @@ public class DatabaseConnectionHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             return null;
         }
+    }
+
+    public ArrayList<AvgLevelModel> getAvgLevelInGuild() {
+        ArrayList<AvgLevelModel> result = new ArrayList<>();
+        try {
+            String query = """
+                    SELECT g3.gname AS ggn, AVG(avg_level)
+                        AS avg_guild_level FROM
+                                               (SELECT p7.gname AS gn, AVG(p2.lvl) as avg_level
+                                                FROM Player_7 p7, Player_2 p2
+                                                WHERE p7.EXP = p2.EXP
+                                                GROUP BY p7.gname, pname),
+                                               Guild_3 g3
+                                           WHERE g3.gname = gn
+                                           GROUP BY g3.gname""";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String guildName = rs.getString("ggn");
+                BigDecimal avgLevel = rs.getBigDecimal("avg_guild_level");
+                avgLevel = avgLevel.setScale(2, RoundingMode.CEILING);
+
+                AvgLevelModel alm = new AvgLevelModel(guildName, avgLevel);
+                result.add(alm);
+            }
+            System.out.println("Success!");
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+        return result;
     }
 
 
