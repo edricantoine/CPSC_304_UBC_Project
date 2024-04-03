@@ -3,6 +3,7 @@ package group.project.App;
 import group.project.database.DatabaseConnectionHandler;
 import group.project.delegates.LoginDelegate;
 import group.project.delegates.TransactionDelegate;
+
 import group.project.model.AvgLevelModel;
 import group.project.model.InventoryModel;
 import group.project.model.Player2Model;
@@ -11,6 +12,7 @@ import group.project.model.Player6Model;
 import group.project.model.Player7Model;
 import group.project.model.QuestModel;
 import group.project.model.ResultSetModel;
+import group.project.model.ItemModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,6 +37,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
     private JPanel havingPanel;
 
     private JPanel projectionPanel;
+    private JPanel joinPanel;
 
     private JPanel nestedAggPanel;
 
@@ -75,6 +78,10 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
     public QuestModel[] selectQuests(String whereClause) {
         return dbHandler.selectQuests(whereClause);
     }
+    public ItemModel[] selectInvItem(Integer invID, Integer value) throws InvIDNotFoundException {
+        return dbHandler.selectInvItem(invID, value);
+    }
+
 
     public InventoryModel[] getInventoryInfo() {
         return dbHandler.getInventoryInfo();
@@ -123,6 +130,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             JButton havingButton = new JButton("Find ranks with most guilds");
             JButton aggrGroupByButton = new JButton("Get Inventory Value"); // Aggregation Group By
             JButton projButton = new JButton("Select attributes from table");
+            JButton joinButton = new JButton("Select valuable items from inventory (join)");
             JButton naggButton = new JButton("Get average player level from guilds");
 
 
@@ -132,6 +140,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             HavingPanel hp = new HavingPanel();
             AggrGroupByPanel agbp = new AggrGroupByPanel();
             ProjectionPanel pjp = new ProjectionPanel();
+            JoinPanel jp = new JoinPanel();
             NestedAggPanel nap = new NestedAggPanel();
 
             deletePanel = dp.getDeletePanel(this, frame, mainPanel);
@@ -140,6 +149,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             havingPanel = hp.getHavingPanel(this, frame, mainPanel);
             aggrGroupByPanel= agbp.getAggrGroupByPanel(this, frame, mainPanel);
             projectionPanel = pjp.getProjectionPanel(this, frame, mainPanel);
+            joinPanel = jp.getJoinPanel(this, frame, mainPanel);
             nestedAggPanel = nap.getNestedAggPanel(this, frame, mainPanel);
 
             insertButton.addActionListener(e -> switchScreen(insertPanel));
@@ -148,6 +158,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             havingButton.addActionListener(e -> switchScreen(havingPanel));
             aggrGroupByButton.addActionListener(e -> switchScreen(aggrGroupByPanel));
             projButton.addActionListener(e -> switchScreen(projectionPanel));
+            joinButton.addActionListener(e -> switchScreen(joinPanel));
             naggButton.addActionListener(e -> switchScreen(nestedAggPanel));
 
 
@@ -159,6 +170,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             mainPanel.add(havingButton);
             mainPanel.add(aggrGroupByButton);
             mainPanel.add(projButton);
+            mainPanel.add(joinButton);
             mainPanel.add(naggButton);
             // Finish
             frame.add(mainPanel);
