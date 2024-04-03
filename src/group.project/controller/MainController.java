@@ -3,6 +3,7 @@ package group.project.controller;
 import group.project.database.DatabaseConnectionHandler;
 import group.project.delegates.LoginDelegate;
 import group.project.delegates.TransactionDelegate;
+import group.project.model.AvgLevelModel;
 import group.project.model.InventoryModel;
 import group.project.model.Player2Model;
 import group.project.model.Player4Model;
@@ -62,6 +63,10 @@ public class MainController implements TransactionDelegate, LoginDelegate {
         return dbHandler.projectionOnTable(selectedAttributes, tableName);
     }
 
+    @Override
+    public ArrayList<AvgLevelModel> getAvgLevelInGuild() {
+        return null;
+    }
 
     public void login(String username, String password) {
         boolean connected = dbHandler.login(username, password);
