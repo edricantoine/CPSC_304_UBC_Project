@@ -4,18 +4,7 @@ import group.project.App.InvIDNotFoundException;
 import group.project.database.DatabaseConnectionHandler;
 import group.project.delegates.LoginDelegate;
 import group.project.delegates.TransactionDelegate;
-
-
-import group.project.model.AvgLevelModel;
-import group.project.model.InventoryModel;
-import group.project.model.Player2Model;
-import group.project.model.Player4Model;
-import group.project.model.Player6Model;
-import group.project.model.Player7Model;
-import group.project.model.QuestModel;
-import group.project.model.ResultSetModel;
-import group.project.model.ItemModel;
-import group.project.model.ShopModel;
+import group.project.model.*;
 
 
 import java.sql.ResultSet;
@@ -63,6 +52,10 @@ public class MainController implements TransactionDelegate, LoginDelegate {
 
     public InventoryModel[] getInventoryInfo() {
         return dbHandler.getInventoryInfo();
+    }
+
+    public DivisionModel[] selectDivision(int lvl) {
+        return dbHandler.selectDivision(lvl);
     }
 
     @Override

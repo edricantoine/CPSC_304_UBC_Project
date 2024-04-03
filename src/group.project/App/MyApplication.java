@@ -6,15 +6,17 @@ import group.project.delegates.TransactionDelegate;
 
 
 import group.project.model.AvgLevelModel;
+import group.project.model.DivisionModel;
 import group.project.model.InventoryModel;
+import group.project.model.ItemModel;
 import group.project.model.Player2Model;
 import group.project.model.Player4Model;
 import group.project.model.Player6Model;
 import group.project.model.Player7Model;
 import group.project.model.QuestModel;
 import group.project.model.ResultSetModel;
-import group.project.model.ItemModel;
 import group.project.model.ShopModel;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,6 +44,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
     private JPanel joinPanel;
 
     private JPanel nestedAggPanel;
+    private JPanel divisionPanel;
 
     public MyApplication() {
         dbHandler = new DatabaseConnectionHandler();
@@ -112,6 +115,9 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
     public ArrayList<AvgLevelModel> getAvgLevelInGuild() {
         return dbHandler.getAvgLevelInGuild();
     }
+    public DivisionModel[] selectDivision(int lvl) {
+        return dbHandler.selectDivision(lvl);
+    }
 
 
 
@@ -143,6 +149,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             JButton projButton = new JButton("Select attributes from table");
             JButton joinButton = new JButton("Select valuable items from inventory (join)");
             JButton naggButton = new JButton("Get average player level from guilds");
+            JButton divisionButton = new JButton("Get All Players Who Completed All Quests (division)");
 
             DeletePanel dp = new DeletePanel();
             InsertPanel ip = new InsertPanel();
@@ -154,6 +161,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             ProjectionPanel pjp = new ProjectionPanel();
             JoinPanel jp = new JoinPanel();
             NestedAggPanel nap = new NestedAggPanel();
+            DivisionPanel divp = new DivisionPanel();
 
             deletePanel = dp.getDeletePanel(this, frame, mainPanel);
             insertPanel = ip.getInsertPanel(this, frame, mainPanel);
@@ -164,6 +172,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             projectionPanel = pjp.getProjectionPanel(this, frame, mainPanel);
             joinPanel = jp.getJoinPanel(this, frame, mainPanel);
             nestedAggPanel = nap.getNestedAggPanel(this, frame, mainPanel);
+            divisionPanel = divp.getDivisionPanel(this, frame, mainPanel);
 
             insertButton.addActionListener(e -> switchScreen(insertPanel));
             deleteButton.addActionListener(e -> switchScreen(deletePanel));
@@ -174,6 +183,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             projButton.addActionListener(e -> switchScreen(projectionPanel));
             joinButton.addActionListener(e -> switchScreen(joinPanel));
             naggButton.addActionListener(e -> switchScreen(nestedAggPanel));
+            divisionButton.addActionListener(e -> switchScreen(divisionPanel));
 
 
             // Add all Buttons
@@ -187,6 +197,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
             mainPanel.add(projButton);
             mainPanel.add(joinButton);
             mainPanel.add(naggButton);
+            mainPanel.add(divisionButton);
             // Finish
             frame.add(mainPanel);
             frame.setVisible(true);

@@ -10,11 +10,15 @@
  WHERE value > 50;
 
 -- rationale: an achievement for a player to complete every quest
- SELECT DISTINCT pname
- FROM Does D
- GROUP BY pname 
- HAVING COUNT(DISTINCT D.pname) = (SELECT COUNT(Q.qname) FROM Quest Q);
-
+SELECT DISTINCT pname
+FROM Does D
+INNER JOIN Quest Q1 ON D.qname = Q1.qname
+GROUP BY pname
+HAVING COUNT(DISTINCT D.qname) = (
+    SELECT COUNT(Q2.qname)
+    FROM Quest Q2
+    WHERE Q2.minlevel <= 5
+);
  -- Average level of players in each guild
  SELECT gname, AVG(avg_level) AS avg_guild_level
  FROM (SELECT gname, AVG(level) AS avg_level

@@ -35,6 +35,7 @@ public interface TransactionDelegate {
     String[] fetchAttributesFromTable(String tableName);
     ItemModel[] selectInvItem(Integer invID, Integer value) throws InvIDNotFoundException;
     ArrayList<AvgLevelModel> getAvgLevelInGuild();
+    DivisionModel[] selectDivision(int lvl);
 
     ResultSetModel projectionOnTable(String[] selectedAttributes, String tableName);
 }
