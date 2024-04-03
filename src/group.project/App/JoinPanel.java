@@ -23,13 +23,18 @@ public class JoinPanel {
         this.mainPanel = mainPanel;
         JPanel panel = new JPanel();
         this.thisPanel = panel;
-        panel.setLayout(new GridLayout(0, 2));
+        panel.setLayout(new GridLayout(0, 1));
 
-        JLabel invIdLabel = new JLabel("Inventory to search (by ID)");
-        JLabel valueLabel = new JLabel("Return all items with value greater than");
+        JLabel invIdLabel = new JLabel("Inventory to search\n" +
+                "(by ID)");
+        JLabel valueLabel = new JLabel("Return all items\n" +
+                "with value greater than");
+
+        valueLabel.setSize(10, 10);
 
         JTextField invIdField = new JTextField(50);
         JTextField valueField = new JTextField(50);
+
 
         this.invIdField = invIdField;
         this.valueField = valueField;

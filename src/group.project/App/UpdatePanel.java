@@ -99,6 +99,7 @@ public class UpdatePanel {
 
         try{
             delegate.updateShop(intShopID, intOwnerID, strStatus);
+            JOptionPane.showMessageDialog(panel, "Success!");
         } catch (SQLException e){
             if(e.getErrorCode() == 1) {
                 String uniqueMsg = "Each shop owner must be unique - please try again.";

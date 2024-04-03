@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ProjectionPanel {
     private TransactionDelegate delegate = null;
@@ -114,7 +115,11 @@ public class ProjectionPanel {
         for(int i = 0; i < rows.size(); i++) {
             String[] data = new String[rows.get(i).size()];
             for(int j = 0; j < rows.get(i).size(); j++) {
-                data[j] = rows.get(i).get(j);
+                if(rows.get(i).get(j) == null) {
+                    data[j] = "Null";
+                } else {
+                    data[j] = rows.get(i).get(j);
+                }
             }
             model.addRow(data);
         }
