@@ -112,6 +112,7 @@ public class UpdatePanel {
 
     private void displayShops(JPanel panel, ShopModel[] shops) {
         // Create a JTable to display quest information
+        shops = delegate.getShopInfo();
         String[] columnNames = {"Owner ID", "Shop ID", "Status"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
         JTable table = new JTable(model);

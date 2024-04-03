@@ -53,8 +53,10 @@ public class MainController implements TransactionDelegate, LoginDelegate {
     public QuestModel[] selectQuests(String whereClause) {
         return dbHandler.selectQuests(whereClause);
     }
-    public ShopModel[] getShopInfo(){
+    public ShopModel[] getShopInfo() {
         return dbHandler.getShopInfo();
+    }
+
     public ItemModel[] selectInvItem(Integer invID, Integer value) throws InvIDNotFoundException {
         return dbHandler.selectInvItem(invID, value);
     }
