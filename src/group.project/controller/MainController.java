@@ -5,6 +5,7 @@ import group.project.database.DatabaseConnectionHandler;
 import group.project.delegates.LoginDelegate;
 import group.project.delegates.TransactionDelegate;
 
+
 import group.project.model.AvgLevelModel;
 import group.project.model.InventoryModel;
 import group.project.model.Player2Model;
@@ -14,6 +15,8 @@ import group.project.model.Player7Model;
 import group.project.model.QuestModel;
 import group.project.model.ResultSetModel;
 import group.project.model.ItemModel;
+import group.project.model.ShopModel;
+
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,6 +38,10 @@ public class MainController implements TransactionDelegate, LoginDelegate {
         dbHandler.deleteNPC(nidsToDelete, namesToDelete);
     }
 
+    public void updateShop(Integer shopID, Integer ownerID, String status) throws SQLException {
+        dbHandler.updateShop(shopID, ownerID, status);
+    }
+
     public Integer[] getRanksWithMostGuilds() {
        return dbHandler.getRanksWithMostGuilds();
     }
@@ -46,6 +53,10 @@ public class MainController implements TransactionDelegate, LoginDelegate {
     public QuestModel[] selectQuests(String whereClause) {
         return dbHandler.selectQuests(whereClause);
     }
+    public ShopModel[] getShopInfo() {
+        return dbHandler.getShopInfo();
+    }
+
     public ItemModel[] selectInvItem(Integer invID, Integer value) throws InvIDNotFoundException {
         return dbHandler.selectInvItem(invID, value);
     }

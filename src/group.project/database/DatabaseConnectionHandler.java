@@ -6,6 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
+
 import group.project.App.InvIDNotFoundException;
 
 
@@ -18,6 +19,8 @@ import group.project.model.Player7Model;
 import group.project.model.QuestModel;
 import group.project.model.ResultSetModel;
 import group.project.model.ItemModel;
+import group.project.model.ShopModel;
+
 
 import group.project.util.PrintablePreparedStatement;
 
@@ -100,6 +103,64 @@ public class DatabaseConnectionHandler {
             ps2.executeUpdate();
             connection.commit();
             ps2.close();
+            System.out.println("Success!");
+
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+            throw e;
+        }
+    }
+
+    public void updateShop(Integer shopID, Integer ownerID, String status) throws SQLException {
+        try {
+            String query = "UPDATE Shop SET ";
+            String ownerIDpart = "ownerid = (?)";
+            String statuspart = "status = (?) ";
+            String endpart = "WHERE shopid = (?)";
+
+            // one of these if statements must be true
+
+            if(ownerID != -1) {
+                if(!Objects.equals(status, "")) {
+                    ownerIDpart = ownerIDpart + ", ";
+                } else {
+                    ownerIDpart = ownerIDpart + " ";
+                }
+                query = query + ownerIDpart;
+            }
+
+            if(!Objects.equals(status, "")) {
+                query = query + statuspart;
+
+            }
+
+            query = query + endpart;
+
+
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            if(ownerID != -1 && !Objects.equals(status, "")) {
+                ps.setInt(1, ownerID);
+                ps.setString(2, status);
+                ps.setInt(3, shopID);
+            } else {
+                if(ownerID == -1) {
+                    ps.setString(1, status);
+                    ps.setInt(2, shopID);
+                } else {
+                    ps.setInt(1, ownerID);
+                    ps.setInt(2, shopID);
+
+                }
+            }
+
+            int rowCount = ps.executeUpdate();
+            System.out.println("Rowcount: " + rowCount);
+            if(rowCount == 0) {
+                System.out.println(WARNING_TAG + " Shop to be updated does not exist.");
+            }
+            connection.commit();
+            ps.close();
             System.out.println("Success!");
 
         } catch (SQLException e) {
@@ -293,6 +354,30 @@ public class DatabaseConnectionHandler {
         }
 
         return result.toArray(new InventoryModel[result.size()]);
+    }
+
+    public ShopModel[] getShopInfo() {
+        ArrayList<ShopModel> result = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM Shop";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                ShopModel model = new ShopModel(rs.getInt("shopid"),
+                        rs.getInt("ownerid"),
+                        rs.getString("status"));
+                result.add(model);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return result.toArray(new ShopModel[result.size()]);
     }
 
     public String[] fetchTableNames() {
