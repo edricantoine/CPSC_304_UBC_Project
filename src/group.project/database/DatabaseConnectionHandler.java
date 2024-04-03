@@ -9,15 +9,7 @@ import java.util.Objects;
 import group.project.App.InvIDNotFoundException;
 
 
-import group.project.model.AvgLevelModel;
-import group.project.model.InventoryModel;
-import group.project.model.Player2Model;
-import group.project.model.Player4Model;
-import group.project.model.Player6Model;
-import group.project.model.Player7Model;
-import group.project.model.QuestModel;
-import group.project.model.ResultSetModel;
-import group.project.model.ItemModel;
+import group.project.model.*;
 
 import group.project.util.PrintablePreparedStatement;
 
@@ -161,6 +153,34 @@ public class DatabaseConnectionHandler {
             rollbackConnection();
         }
 
+    }
+
+    public DivisionModel[] selectDivision(int lvl) {
+        ArrayList<DivisionModel> result = new ArrayList<>();
+        try {
+            String queries = "SELECT DISTINCT pname FROM Does D INNER JOIN Quest Q1 ON D.qname = Q1.qname "
+                    + "GROUP BY pname HAVING COUNT(DISTINCT D.qname) = (SELECT COUNT(Q2.qname) FROM Quest Q2 "
+                    + "WHERE Q2.minlevel <= (?))";
+
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(queries), queries, false);
+            ps.setInt(1, lvl);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                DivisionModel model = new DivisionModel(rs.getString("name"),
+                        rs.getInt("qc"));
+                result.add(model);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            System.out.println("SQL State: " + e.getSQLState());
+            System.out.println("Error Code: " + e.getErrorCode());
+            System.out.println("Cause: " + e.getCause());
+            rollbackConnection();
+        }
+        return result.toArray(new DivisionModel[result.size()]);
     }
 
     public Integer[] getRanksWithMostGuilds() {
