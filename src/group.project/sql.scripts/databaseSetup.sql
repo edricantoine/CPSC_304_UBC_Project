@@ -176,7 +176,7 @@ INSERT INTO Player_6 VALUES (100000, 750);
 INSERT INTO Player_7 Values ('Player1', 1, NULL, NULL, 100, NULL, NULL);
 INSERT INTO Player_7 Values ('Leeroy Jenkins', 1, NULL, NULL, 500, 'Pals for Life', 'officer');
 INSERT INTO Player_7 Values ('Chuck E. Cheese', 2, NULL, NULL, 1000, 'Beginner Guild', 'recruit');
-INSERT INTO Player_7 Values ('Homer Simpsonn', 3, NULL, NULL, 100000, NULL, NULL);
+INSERT INTO Player_7 Values ('Homer Simpsonn', 3, NULL, NULL, 100000, 'Beginner Guild', 'captain');
 INSERT INTO Player_7 Values ('GandalfTheCool', 5, NULL, NULL, 100000, 'Advanced Guild', 3);
 
 INSERT INTO Inventory VALUES (1, 'Player1', 1, 10);
