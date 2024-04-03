@@ -3,13 +3,7 @@ package group.project.controller;
 import group.project.database.DatabaseConnectionHandler;
 import group.project.delegates.LoginDelegate;
 import group.project.delegates.TransactionDelegate;
-import group.project.model.InventoryModel;
-import group.project.model.Player2Model;
-import group.project.model.Player4Model;
-import group.project.model.Player6Model;
-import group.project.model.Player7Model;
-import group.project.model.QuestModel;
-import group.project.model.ResultSetModel;
+import group.project.model.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,6 +39,9 @@ public class MainController implements TransactionDelegate, LoginDelegate {
 
     public QuestModel[] selectQuests(String whereClause) {
         return dbHandler.selectQuests(whereClause);
+    }
+    public ShopModel[] getShopInfo(){
+        return dbHandler.getShopInfo();
     }
 
     public InventoryModel[] getInventoryInfo() {

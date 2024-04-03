@@ -4,13 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import group.project.model.InventoryModel;
-import group.project.model.Player2Model;
-import group.project.model.Player4Model;
-import group.project.model.Player6Model;
-import group.project.model.Player7Model;
-import group.project.model.QuestModel;
-import group.project.model.ResultSetModel;
+import group.project.model.*;
 import group.project.util.PrintablePreparedStatement;
 
 // CITATION: THIS CODE TAKES HEAVILY FROM THE JAVA/ORACLE SAMPLE PROJECT CODE.
@@ -304,6 +298,30 @@ public class DatabaseConnectionHandler {
         }
 
         return result.toArray(new InventoryModel[result.size()]);
+    }
+
+    public ShopModel[] getShopInfo() {
+        ArrayList<ShopModel> result = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM Shop";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                ShopModel model = new ShopModel(rs.getInt("shopid"),
+                        rs.getInt("ownerid"),
+                        rs.getString("status"));
+                result.add(model);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return result.toArray(new ShopModel[result.size()]);
     }
 
     public String[] fetchTableNames() {

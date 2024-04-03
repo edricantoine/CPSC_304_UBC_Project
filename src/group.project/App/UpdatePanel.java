@@ -1,8 +1,11 @@
 package group.project.App;
 
 import group.project.delegates.TransactionDelegate;
+import group.project.model.QuestModel;
+import group.project.model.ShopModel;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -48,6 +51,12 @@ public class UpdatePanel {
 //        alertButton.addActionListener(e -> showAlert(panel));
         updateButton.addActionListener(e -> doQuery(panel));
         panel.add(updateButton);
+
+        // Add button to view shop info
+        ShopModel[] shops = delegate.getShopInfo();
+        JButton shopButton = new JButton("View Shops");
+        shopButton.addActionListener(e -> displayShops(panel, shops));
+        panel.add(shopButton);
 
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> switchScreen(mainPanel, frame));
@@ -99,6 +108,26 @@ public class UpdatePanel {
                 JOptionPane.showMessageDialog(panel, msg);
             }
         }
+    }
+
+    private void displayShops(JPanel panel, ShopModel[] shops) {
+        // Create a JTable to display quest information
+        String[] columnNames = {"Owner ID", "Shop ID", "Status"};
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        JTable table = new JTable(model);
+
+        // Populate the table with quest information
+        for (ShopModel shop : shops) {
+            Object[] rowData = {shop.getOwnerid(), shop.getShopid(), shop.getStatus()};
+            model.addRow(rowData);
+        }
+
+        // Create JScrollPane to hold the table
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(600, 400)); // Set preferred size
+
+        // Show the table in a dialog
+        JOptionPane.showMessageDialog(null, scrollPane, "Shop Information", JOptionPane.PLAIN_MESSAGE);
     }
 
     private void showAlert(JPanel panel) {
