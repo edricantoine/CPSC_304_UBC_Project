@@ -73,8 +73,17 @@ public class DatabaseConnectionHandler {
             ps2.setString(1, p7.getPname());
             ps2.setInt(2, p7.getSid());
 
+            String tempServerQuery = "SELECT SID FROM Server WHERE SID = (?)";
+            PrintablePreparedStatement pst = new PrintablePreparedStatement(connection.prepareStatement(tempServerQuery), tempServerQuery, false);
+
+            pst.setInt(1, p7.getSid());
+            ResultSet serverResult = pst.executeQuery();
+            if(!serverResult.next()) {
+                throw new Exception("Server ID not found.");
+            }
+
             String tempPlayerQuery = "SELECT PNAME, SID FROM PLAYER_7 WHERE PNAME = (?) AND SID = (?)";
-            PrintablePreparedStatement pst = new PrintablePreparedStatement(connection.prepareStatement(tempPlayerQuery), tempPlayerQuery, false);
+            pst = new PrintablePreparedStatement(connection.prepareStatement(tempPlayerQuery), tempPlayerQuery, false);
 
             pst.setString(1, p7.getPname());
             pst.setInt(2, p7.getSid());
@@ -83,6 +92,7 @@ public class DatabaseConnectionHandler {
             if(playerResult.next()) {
                 throw new Exception("Duplicate player name + server ID combo.");
             }
+
 
             String tempQuery = "SELECT WNAME, WID FROM Weapon_3 WHERE WNAME = (?) AND WID = (?)";
             pst = new PrintablePreparedStatement(connection.prepareStatement(tempQuery), tempQuery, false);
