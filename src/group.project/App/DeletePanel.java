@@ -50,7 +50,11 @@ public class DeletePanel {
     private void doQuery(JPanel panel) {
         String stringNids = this.nidsField.getText();
         String stringNames = this.nnamesField.getText();
-        stringNames.replaceAll("[^a-zA-Z0-9],","");
+        stringNames = stringNames.replaceAll("[^a-zA-Z0-9],","");
+        if(stringNames.length() > 50) {
+            JOptionPane.showMessageDialog(panel, "Input is too long (should be <= 50 characters)");
+            return;
+        }
         ArrayList<String> names = new ArrayList<String>();
         ArrayList<Integer> nids = new ArrayList<Integer>();
 

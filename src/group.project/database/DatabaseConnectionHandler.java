@@ -42,7 +42,7 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) throws SQLException {
+    public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) throws Exception {
         try {
             String query2 = "INSERT /*+ IGNORE_ROW_ON_DUPKEY_INDEX (Player_2 (exp)) */ INTO Player_2 VALUES (?, ?)";
             PrintablePreparedStatement ps2 = new PrintablePreparedStatement(connection.prepareStatement(query2), query2, false);
@@ -73,24 +73,61 @@ public class DatabaseConnectionHandler {
             ps2.setString(1, p7.getPname());
             ps2.setInt(2, p7.getSid());
 
+            String tempPlayerQuery = "SELECT PNAME, SID FROM PLAYER_7 WHERE PNAME = (?) AND SID = (?)";
+            PrintablePreparedStatement pst = new PrintablePreparedStatement(connection.prepareStatement(tempPlayerQuery), tempPlayerQuery, false);
+
+            pst.setString(1, p7.getPname());
+            pst.setInt(2, p7.getSid());
+
+            ResultSet playerResult = pst.executeQuery();
+            if(playerResult.next()) {
+                throw new Exception("Duplicate player name + server ID combo.");
+            }
+
+            String tempQuery = "SELECT WNAME, WID FROM Weapon_3 WHERE WNAME = (?) AND WID = (?)";
+            pst = new PrintablePreparedStatement(connection.prepareStatement(tempQuery), tempQuery, false);
+
+            if((p7.getWid() == -1 && !Objects.equals(p7.getWname(), "")) || (p7.getWid() != -1 && Objects.equals(p7.getWname(), ""))) {
+                throw new Exception("Weapon name and ID must both be empty or both be non-empty.");
+            }
 
             if(Objects.equals(p7.getWname(), "")) {
                 ps2.setNull(3, java.sql.Types.VARCHAR);
+                pst.setNull(1, java.sql.Types.VARCHAR);
             } else {
                 ps2.setString(3, p7.getWname());
+                pst.setString(1, p7.getWname());
             }
 
             if(p7.getWid() == -1) {
                 ps2.setNull(4, java.sql.Types.INTEGER);
+                pst.setNull(2, java.sql.Types.INTEGER);
             } else {
                 ps2.setInt(4, p7.getWid());
+                pst.setInt(2, p7.getWid());
+            }
+
+            ResultSet wnamewidResult = pst.executeQuery();
+            if(!wnamewidResult.next() && p7.getWid() != -1) {
+                throw new Exception("Weapon name or ID not found");
             }
 
             ps2.setInt(5, p7.getExp());
+
+            String tempGuildQuery = "SELECT gname FROM Guild_3 WHERE gname = (?)";
+            pst =  new PrintablePreparedStatement(connection.prepareStatement(tempGuildQuery), tempGuildQuery, false);
+
             if(Objects.equals(p7.getGname(), "")) {
                 ps2.setNull(6, java.sql.Types.VARCHAR);
+                pst.setNull(1, java.sql.Types.VARCHAR);
             } else {
                 ps2.setString(6, p7.getGname());
+                pst.setString(1, p7.getGname());
+            }
+
+            ResultSet gnameResult = pst.executeQuery();
+            if(!gnameResult.next() && !Objects.equals(p7.getGname(), "")) {
+                throw new Exception("Guild name not found.");
             }
 
             if(Objects.equals(p7.getRole(), "")) {
@@ -107,6 +144,8 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             rollbackConnection();
+            throw e;
+        } catch (Exception e) {
             throw e;
         }
     }
