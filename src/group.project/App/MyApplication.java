@@ -64,7 +64,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         frame.repaint();
     }
 
-    public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) throws SQLException {
+    public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) throws Exception {
         dbHandler.insertPlayer(p2, p4, p6, p7);
     }
 

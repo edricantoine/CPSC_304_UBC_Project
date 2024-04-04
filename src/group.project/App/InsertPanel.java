@@ -74,6 +74,11 @@ public class InsertPanel {
         }
 
         String pname = fields.get(0).getText();
+        pname = pname.replaceAll("[^a-zA-Z0-9 ]","");
+        if(pname.length() > 50) {
+            JOptionPane.showMessageDialog(panel, "Input is too long (should be <= 50 characters)");
+            return;
+        }
         int sid = 0;
         try {
             sid = Integer.parseInt(fields.get(1).getText());
@@ -82,6 +87,11 @@ public class InsertPanel {
             return;
         }
         String wname = fields.get(3).getText();
+        wname = wname.replaceAll("[^a-zA-Z0-9 ]","");
+        if(wname.length() > 50) {
+            JOptionPane.showMessageDialog(panel, "Input is too long (should be <= 50 characters)");
+            return;
+        }
 
         int wid = -1;
 
@@ -105,7 +115,17 @@ public class InsertPanel {
         }
 
         String gname = fields.get(8).getText();
+        gname = gname.replaceAll("[^a-zA-Z0-9 ]","");
+        if(gname.length() > 50) {
+            JOptionPane.showMessageDialog(panel, "Input is too long (should be <= 50 characters)");
+            return;
+        }
         String role = fields.get(9).getText();
+        role = role.replaceAll("[^a-zA-Z0-9 ]","");
+        if(role.length() > 50) {
+            JOptionPane.showMessageDialog(panel, "Input is too long (should be <= 50 characters)");
+            return;
+        }
 
         int lvl = 0;
         int mana = 0;
@@ -139,10 +159,10 @@ public class InsertPanel {
         try {
             delegate.insertPlayer(p2, p4, p6, p7);
             JOptionPane.showMessageDialog(panel, "Success!");
-        } catch (SQLException e) {
-            String msg = "An error occurred. Exception: " + e.getMessage();
+        } catch (Exception e) {
+            String msg = "An error occurred: " + e.getMessage();
             JOptionPane.showMessageDialog(panel, msg);
-        }
+        } 
     }
 
     private void showAlert(JPanel panel) {
