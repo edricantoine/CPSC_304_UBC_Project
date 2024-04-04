@@ -126,7 +126,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         if(connected) {
             loginWindow.dispose();
             frame = new JFrame("My Application");
-            frame.setSize(400, 300);
+            frame.setSize(600, 300);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             // Create main panel

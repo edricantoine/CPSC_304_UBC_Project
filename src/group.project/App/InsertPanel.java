@@ -158,10 +158,11 @@ public class InsertPanel {
         Player2Model p2 = new Player2Model(exp, lvl);
         try {
             delegate.insertPlayer(p2, p4, p6, p7);
+            JOptionPane.showMessageDialog(panel, "Success!");
         } catch (Exception e) {
             String msg = "An error occurred: " + e.getMessage();
             JOptionPane.showMessageDialog(panel, msg);
-        }
+        } 
     }
 
     private void showAlert(JPanel panel) {

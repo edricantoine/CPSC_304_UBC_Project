@@ -23,8 +23,12 @@ public class DeletePanel {
         this.thisPanel = panel;
         panel.setLayout(new GridLayout(0, 2));
 
-        JLabel nidsLabel = new JLabel("NPC IDs to delete (separate with comma)");
-        JLabel nnamesLabel = new JLabel("NPC names to delete (separate with comma)");
+        JLabel nidsLabel = new JLabel("NPC IDs to delete");
+        JLabel cLabel = new JLabel("(separate with comma)");
+        JLabel nnamesLabel = new JLabel("NPC names to delete");
+        JLabel cLabel2 = new JLabel("(separate with comma)");
+        JLabel blank = new JLabel("");
+        JLabel blank2 = new JLabel("");
 
         JTextField nidsField = new JTextField(50);
         JTextField nnamesField = new JTextField(50);
@@ -33,9 +37,13 @@ public class DeletePanel {
         this.nnamesField = nnamesField;
 
         panel.add(nidsLabel);
+        panel.add(cLabel);
         panel.add(nidsField);
+        panel.add(blank);
         panel.add(nnamesLabel);
+        panel.add(cLabel2);
         panel.add(nnamesField);
+        panel.add(blank2);
 
         JButton doButton = new JButton("Delete NPCs");
         doButton.addActionListener(e -> doQuery(panel));
@@ -58,6 +66,11 @@ public class DeletePanel {
         ArrayList<String> names = new ArrayList<String>();
         ArrayList<Integer> nids = new ArrayList<Integer>();
 
+        if(stringNames.isEmpty() && stringNids.isEmpty()) {
+            JOptionPane.showMessageDialog(panel, "Please enter values.");
+            return;
+        }
+
         if(!stringNames.isEmpty()) {
             String[] tempNames = stringNames.split(",");
             names.addAll(Arrays.asList(tempNames));
@@ -74,7 +87,12 @@ public class DeletePanel {
             JOptionPane.showMessageDialog(panel, "Only enter integers as NPC IDs.");
             return;
         }
-        delegate.deleteNPC(nids, names);
+        try {
+            delegate.deleteNPC(nids, names);
+            JOptionPane.showMessageDialog(panel,"Success!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panel, "Action failed.");
+        }
 
     }
 
