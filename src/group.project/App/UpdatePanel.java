@@ -86,6 +86,7 @@ public class UpdatePanel {
         }
 
         String strStatus = this.status.getText();
+        strStatus.replaceAll("[^a-zA-Z0-9]","");
 
         if(Objects.equals(strStatus, "") && intOwnerID == -1) {
             JOptionPane.showMessageDialog(panel, "Please update some column.");

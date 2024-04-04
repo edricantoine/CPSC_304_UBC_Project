@@ -50,6 +50,7 @@ public class DeletePanel {
     private void doQuery(JPanel panel) {
         String stringNids = this.nidsField.getText();
         String stringNames = this.nnamesField.getText();
+        stringNames.replaceAll("[^a-zA-Z0-9],","");
         ArrayList<String> names = new ArrayList<String>();
         ArrayList<Integer> nids = new ArrayList<Integer>();
 

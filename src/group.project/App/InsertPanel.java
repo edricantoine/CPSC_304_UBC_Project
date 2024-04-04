@@ -82,6 +82,7 @@ public class InsertPanel {
             return;
         }
         String wname = fields.get(3).getText();
+        wname.replaceAll("[^a-zA-Z0-9]","");
 
         int wid = -1;
 
@@ -105,7 +106,9 @@ public class InsertPanel {
         }
 
         String gname = fields.get(8).getText();
+        gname.replaceAll("[^a-zA-Z0-9]","");
         String role = fields.get(9).getText();
+        role.replaceAll("[^a-zA-Z0-9]","");
 
         int lvl = 0;
         int mana = 0;
