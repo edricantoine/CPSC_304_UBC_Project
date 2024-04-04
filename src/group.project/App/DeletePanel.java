@@ -25,10 +25,10 @@ public class DeletePanel {
 
         JLabel nidsLabel = new JLabel("NPC IDs to delete");
         JLabel cLabel = new JLabel("(separate with comma)");
-        JLabel nnamesLabel = new JLabel("NPC names to delete");
-        JLabel cLabel2 = new JLabel("(separate with comma)");
+        //JLabel nnamesLabel = new JLabel("NPC names to delete");
+        //JLabel cLabel2 = new JLabel("(separate with comma)");
         JLabel blank = new JLabel("");
-        JLabel blank2 = new JLabel("");
+        //JLabel blank2 = new JLabel("");
 
         JTextField nidsField = new JTextField(50);
         JTextField nnamesField = new JTextField(50);
@@ -40,10 +40,6 @@ public class DeletePanel {
         panel.add(cLabel);
         panel.add(nidsField);
         panel.add(blank);
-        panel.add(nnamesLabel);
-        panel.add(cLabel2);
-        panel.add(nnamesField);
-        panel.add(blank2);
 
         JButton doButton = new JButton("Delete NPCs");
         doButton.addActionListener(e -> doQuery(panel));
@@ -66,8 +62,8 @@ public class DeletePanel {
         ArrayList<String> names = new ArrayList<String>();
         ArrayList<Integer> nids = new ArrayList<Integer>();
 
-        if(stringNames.isEmpty() && stringNids.isEmpty()) {
-            JOptionPane.showMessageDialog(panel, "Please enter values.");
+        if(stringNids.isEmpty()) {
+            JOptionPane.showMessageDialog(panel, "Please enter values for IDs to delete.");
             return;
         }
 
@@ -88,10 +84,10 @@ public class DeletePanel {
             return;
         }
         try {
-            delegate.deleteNPC(nids, names);
+            delegate.deleteNPC(nids);
             JOptionPane.showMessageDialog(panel,"Success!");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(panel, "Action failed.");
+            JOptionPane.showMessageDialog(panel, e.getMessage());
         }
 
     }

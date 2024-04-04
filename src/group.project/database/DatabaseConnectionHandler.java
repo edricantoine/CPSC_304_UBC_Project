@@ -218,11 +218,12 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    public void deleteNPC(ArrayList<Integer> nidsToDelete, ArrayList<String> namesToDelete) {
+    public void deleteNPC(ArrayList<Integer> nidsToDelete) throws Exception {
         try {
             String query = "DELETE FROM NPC WHERE ";
             String queryNidPart = "nid = (?) ";
-            String queryNamePart = "nname = (?) ";
+            String tempQuery = "SELECT COUNT(NID) AS cnid FROM NPC WHERE ";
+            String tempNidPart = "nid = (?) ";
 
             boolean isFirst = true;
 
@@ -230,32 +231,30 @@ public class DatabaseConnectionHandler {
                 if(isFirst) {
                     isFirst = false;
                     query = query + queryNidPart;
+                    tempQuery = tempQuery + tempNidPart;
                 } else {
                     query = query + "OR " + queryNidPart;
-                }
-            }
-
-            for(int i = 0; i < namesToDelete.size(); i++) {
-                if (isFirst) {
-                    isFirst = false;
-                    query = query + queryNamePart;
-                } else {
-                    query = query + "OR " + queryNamePart;
+                    tempQuery = tempQuery + "OR " + tempNidPart;
                 }
             }
 
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            PrintablePreparedStatement pst = new PrintablePreparedStatement(connection.prepareStatement(tempQuery), tempQuery, false);
 
             int index = 1;
 
             for(int i = 0; i < nidsToDelete.size(); i++) {
                 ps.setInt(index, nidsToDelete.get(i));
+                pst.setInt(index, nidsToDelete.get(i));
                 index++;
             }
 
-            for(int i = 0; i < namesToDelete.size(); i++) {
-                ps.setString(index, namesToDelete.get(i));
-                index++;
+            ResultSet nidSet = pst.executeQuery();
+            nidSet.next();
+            int tempCount = nidSet.getInt("cnid");
+
+            if(tempCount < nidsToDelete.size()) {
+                throw new Exception("One or more NPC IDs were not found.");
             }
 
             int rowCount = ps.executeUpdate();
@@ -264,10 +263,13 @@ public class DatabaseConnectionHandler {
             }
             connection.commit();
             ps.close();
+            pst.close();
             System.out.println("Success!");
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             rollbackConnection();
+        } catch (Exception e) {
+            throw e;
         }
 
     }
