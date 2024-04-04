@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public interface TransactionDelegate {
     public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) throws Exception;
-    public void deleteNPC(ArrayList<Integer> nidsToDelete, ArrayList<String> namesToDelete);
+    public void deleteNPC(ArrayList<Integer> nidsToDelete) throws Exception;
     public void updateShop(Integer shopID, Integer ownerID, String status) throws SQLException;
     public Integer[] getRanksWithMostGuilds();
     public int getInventoryValue(int id) throws InvIDNotFoundException;

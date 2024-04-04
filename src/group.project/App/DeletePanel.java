@@ -88,10 +88,10 @@ public class DeletePanel {
             return;
         }
         try {
-            delegate.deleteNPC(nids, names);
+            delegate.deleteNPC(nids);
             JOptionPane.showMessageDialog(panel,"Success!");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(panel, "Action failed.");
+            JOptionPane.showMessageDialog(panel, e.getMessage());
         }
 
     }

@@ -68,8 +68,8 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         dbHandler.insertPlayer(p2, p4, p6, p7);
     }
 
-    public void deleteNPC(ArrayList<Integer> nidsToDelete, ArrayList<String> namesToDelete) {
-        dbHandler.deleteNPC(nidsToDelete, namesToDelete);
+    public void deleteNPC(ArrayList<Integer> nidsToDelete) throws Exception {
+        dbHandler.deleteNPC(nidsToDelete);
     }
 
     public void updateShop(Integer shopID, Integer ownerID, String status) throws SQLException {
