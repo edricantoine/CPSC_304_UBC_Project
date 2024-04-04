@@ -86,7 +86,11 @@ public class UpdatePanel {
         }
 
         String strStatus = this.status.getText();
-        strStatus.replaceAll("[^a-zA-Z0-9]","");
+        strStatus = strStatus.replaceAll("[^a-zA-Z0-9]","");
+        if(strStatus.length() > 50) {
+            JOptionPane.showMessageDialog(panel, "Input is too long (should be <= 50 characters)");
+            return;
+        }
 
         if(Objects.equals(strStatus, "") && intOwnerID == -1) {
             JOptionPane.showMessageDialog(panel, "Please update some column.");

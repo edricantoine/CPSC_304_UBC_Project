@@ -71,11 +71,13 @@ public class AggrGroupByPanel {
         try {
             int inventoryId = Integer.parseInt(inventoryIdText);
             inventoryValue = delegate.getInventoryValue(inventoryId);
+            displayInventoryValue(panel, inventoryValue);
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(panel, "Invalid inventory ID. Please enter a valid integer.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (InvIDNotFoundException e) {
+            JOptionPane.showMessageDialog(panel, e.getMessage(), "Inventory ID Not Found", JOptionPane.ERROR_MESSAGE);
         }
 
-        displayInventoryValue(panel, inventoryValue);
     }
 
     private void displayInventoryValue(JPanel panel, int inventoryValue) {

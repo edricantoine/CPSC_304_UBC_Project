@@ -64,12 +64,12 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         frame.repaint();
     }
 
-    public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) throws SQLException {
+    public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) throws Exception {
         dbHandler.insertPlayer(p2, p4, p6, p7);
     }
 
-    public void deleteNPC(ArrayList<Integer> nidsToDelete, ArrayList<String> namesToDelete) {
-        dbHandler.deleteNPC(nidsToDelete, namesToDelete);
+    public void deleteNPC(ArrayList<Integer> nidsToDelete) throws Exception {
+        dbHandler.deleteNPC(nidsToDelete);
     }
 
     public void updateShop(Integer shopID, Integer ownerID, String status) throws SQLException, Exception {
@@ -80,7 +80,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         return dbHandler.getRanksWithMostGuilds();
     }
 
-    public int getInventoryValue(int id) {
+    public int getInventoryValue(int id) throws InvIDNotFoundException {
         return dbHandler.getInventoryValue(id);
     }
 
@@ -126,7 +126,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         if(connected) {
             loginWindow.dispose();
             frame = new JFrame("My Application");
-            frame.setSize(400, 300);
+            frame.setSize(600, 300);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             // Create main panel
