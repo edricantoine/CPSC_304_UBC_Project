@@ -73,6 +73,8 @@ public class AggrGroupByPanel {
             inventoryValue = delegate.getInventoryValue(inventoryId);
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(panel, "Invalid inventory ID. Please enter a valid integer.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (InvIDNotFoundException e) {
+            JOptionPane.showMessageDialog(panel, e.getMessage(), "Inventory ID Not Found", JOptionPane.ERROR_MESSAGE);
         }
 
         displayInventoryValue(panel, inventoryValue);
