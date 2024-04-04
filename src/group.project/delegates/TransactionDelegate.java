@@ -26,7 +26,7 @@ public interface TransactionDelegate {
     public void deleteNPC(ArrayList<Integer> nidsToDelete, ArrayList<String> namesToDelete);
     public void updateShop(Integer shopID, Integer ownerID, String status) throws SQLException;
     public Integer[] getRanksWithMostGuilds();
-    public int getInventoryValue(int id);
+    public int getInventoryValue(int id) throws InvIDNotFoundException;
     QuestModel[] selectQuests(String whereClause);
     ShopModel[] getShopInfo();
     public InventoryModel[] getInventoryInfo();

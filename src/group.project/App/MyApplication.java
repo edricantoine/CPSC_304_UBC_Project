@@ -80,7 +80,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         return dbHandler.getRanksWithMostGuilds();
     }
 
-    public int getInventoryValue(int id) {
+    public int getInventoryValue(int id) throws InvIDNotFoundException {
         return dbHandler.getInventoryValue(id);
     }
 

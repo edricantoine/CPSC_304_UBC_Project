@@ -318,9 +318,21 @@ public class DatabaseConnectionHandler {
         return result.toArray(new Integer[result.size()]);
     }
 
-    public int getInventoryValue(int id) {
+    public int getInventoryValue(int id) throws InvIDNotFoundException {
         int result = 0;
         try {
+            // Check to see if inventory exists with selected id
+            String query1 = "SELECT * FROM Inventory WHERE invid = (?)";
+            PrintablePreparedStatement ps1 = new PrintablePreparedStatement(connection.prepareStatement(query1), query1, false);
+
+            ps1.setInt(1, id);
+            ResultSet rs1 = ps1.executeQuery();
+
+            if (!rs1.next()) {
+                throw new InvIDNotFoundException("Inventory ID not found");
+            }
+
+            // If inventory exists, perform query
             String query =
                     "SELECT iname, SUM(value) as item_total_value " +
                     "FROM Inventory JOIN Item ON (Inventory.invid = Item.invid) " +
