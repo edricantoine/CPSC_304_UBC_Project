@@ -104,15 +104,20 @@ public class UpdatePanel {
 
         try{
             delegate.updateShop(intShopID, intOwnerID, strStatus);
-            JOptionPane.showMessageDialog(panel, "Success!");
+            JOptionPane.showMessageDialog(panel, "Shop Successfully Updated!");
         } catch (SQLException e){
             if(e.getErrorCode() == 1) {
                 String uniqueMsg = "Each shop owner must be unique - please try again.";
+                JOptionPane.showMessageDialog(panel, uniqueMsg);
+            } else if (e.getErrorCode() == 2291) {
+                String uniqueMsg = "Owner ID not found - please try again.";
                 JOptionPane.showMessageDialog(panel, uniqueMsg);
             } else {
                 String msg = "An error occurred. Exception: " + e.getMessage();
                 JOptionPane.showMessageDialog(panel, msg);
             }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panel, e.getMessage());
         }
     }
 

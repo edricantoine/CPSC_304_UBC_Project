@@ -50,7 +50,7 @@ public class DivisionPanel {
             DivisionModel[] players = delegate.selectDivision(lvl);
             displayItems(panel, players, lvl);
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(panel, "Please enter valid integer values for Inventory ID and Value.",
+            JOptionPane.showMessageDialog(panel, "Please enter valid number.",
                     "Input Error", JOptionPane.ERROR_MESSAGE);
         }
     }

@@ -37,7 +37,7 @@ public class MainController implements TransactionDelegate, LoginDelegate {
         dbHandler.deleteNPC(nidsToDelete);
     }
 
-    public void updateShop(Integer shopID, Integer ownerID, String status) throws SQLException {
+    public void updateShop(Integer shopID, Integer ownerID, String status) throws SQLException, Exception {
         dbHandler.updateShop(shopID, ownerID, status);
     }
 

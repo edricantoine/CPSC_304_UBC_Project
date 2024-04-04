@@ -158,7 +158,10 @@ public class InsertPanel {
         Player2Model p2 = new Player2Model(exp, lvl);
         try {
             delegate.insertPlayer(p2, p4, p6, p7);
-            JOptionPane.showMessageDialog(panel, "Success!");
+            JOptionPane.showMessageDialog(panel, "Player Successfully Added!");
+        } catch (SQLException e) {
+            String msg = "An error occurred. Exception: " + e.getMessage();
+            JOptionPane.showMessageDialog(panel, msg);
         } catch (Exception e) {
             String msg = "An error occurred: " + e.getMessage();
             JOptionPane.showMessageDialog(panel, msg);
