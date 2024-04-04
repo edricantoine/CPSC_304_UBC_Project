@@ -72,7 +72,7 @@ public class MyApplication implements TransactionDelegate, LoginDelegate {
         dbHandler.deleteNPC(nidsToDelete, namesToDelete);
     }
 
-    public void updateShop(Integer shopID, Integer ownerID, String status) throws SQLException {
+    public void updateShop(Integer shopID, Integer ownerID, String status) throws SQLException, Exception {
         dbHandler.updateShop(shopID, ownerID, status);
     }
 

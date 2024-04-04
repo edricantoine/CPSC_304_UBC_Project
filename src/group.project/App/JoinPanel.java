@@ -57,7 +57,7 @@ public class JoinPanel {
             ItemModel[] items = delegate.selectInvItem(invID, value);
             displayItems(panel, items);
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(panel, "Please enter valid integer values for Inventory ID and Value.",
+            JOptionPane.showMessageDialog(panel, "Please enter valid number.",
                     "Input Error", JOptionPane.ERROR_MESSAGE);
         } catch (InvIDNotFoundException e) {
             JOptionPane.showMessageDialog(panel, e.getMessage(), "Inventory ID Not Found", JOptionPane.ERROR_MESSAGE);

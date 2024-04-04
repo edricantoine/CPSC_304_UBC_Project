@@ -111,7 +111,17 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    public void updateShop(Integer shopID, Integer ownerID, String status) throws SQLException {
+    public void updateShop(Integer shopID, Integer ownerID, String status) throws SQLException, Exception {
+        String query1 = "SELECT * FROM Shop WHERE shopID=(?)";
+        PrintablePreparedStatement ps2 = new PrintablePreparedStatement(connection.prepareStatement(query1), query1);
+        ps2.setInt(1, shopID);
+
+        ResultSet rs1 = ps2.executeQuery();
+
+        if (!rs1.next()) {
+            throw new Exception("Shop ID not found.");
+        }
+
         try {
             String query = "UPDATE Shop SET ";
             String ownerIDpart = "ownerid = (?)";
