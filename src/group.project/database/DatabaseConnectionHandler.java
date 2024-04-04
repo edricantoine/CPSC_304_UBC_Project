@@ -250,6 +250,7 @@ public class DatabaseConnectionHandler {
             }
 
             ResultSet nidSet = pst.executeQuery();
+            nidSet.next();
             int tempCount = nidSet.getInt("cnid");
 
             if(tempCount < nidsToDelete.size()) {
