@@ -22,7 +22,7 @@ import java.util.ArrayList;
 // CITATION: THIS CODE TAKES HEAVILY FROM THE JAVA/ORACLE SAMPLE PROJECT CODE.
 
 public interface TransactionDelegate {
-    public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) throws SQLException;
+    public void insertPlayer(Player2Model p2, Player4Model p4, Player6Model p6, Player7Model p7) throws Exception;
     public void deleteNPC(ArrayList<Integer> nidsToDelete) throws Exception;
     public void updateShop(Integer shopID, Integer ownerID, String status) throws SQLException, Exception;
     public Integer[] getRanksWithMostGuilds();
